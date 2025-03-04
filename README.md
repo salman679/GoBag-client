@@ -26,7 +26,7 @@ Gobag is a luggage-sharing platform that connects travelers with extra luggage s
 ## Installation & Setup
 1. Clone the repository:
    ```sh
-   git clone https://github.com/yourusername/gobag.git
+   git clone https://github.com/abidt20ahmed/gobag.git
    cd gobag
    ```
 2. Install dependencies:
@@ -60,8 +60,8 @@ We welcome contributions! Follow these steps:
 
 ## Contact & Support
 For any queries or support, feel free to contact us at:
-- **Email**: support@gobag.com
-- **Website**: [Gobag.com](https://www.gobag.com)
+- **Email**: support@gobag.travel
+- **Website**: [Gobag.travel](https://www.gobag.travel)
 - **Community**: Join our Discord/Telegram group.
 
 ## License
