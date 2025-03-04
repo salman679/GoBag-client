@@ -12,7 +12,8 @@ interface LoginFormData {
 }
 
 const Login: React.FC = () => {
-  const { login, isLoading, signInWithGoogle } = useAuthStore();
+  const { login, isLoading, signInWithGoogle, signInWithFacebook } =
+    useAuthStore();
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
 
@@ -40,6 +41,16 @@ const Login: React.FC = () => {
       navigate("/");
     } catch (error) {
       console.error("Error signing in with Google:", error);
+    }
+  };
+
+  const handleFacebookLogin = async () => {
+    try {
+      await signInWithFacebook();
+
+      navigate("/");
+    } catch (error) {
+      console.error("Error signing in with Facebook:", error);
     }
   };
 
@@ -164,11 +175,8 @@ const Login: React.FC = () => {
                 </button>
               </div>
 
-              <div>
-                <a
-                  href="#"
-                  className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
-                >
+              <div onClick={handleFacebookLogin}>
+                <button className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
                   <span className="sr-only">Sign in with Facebook</span>
                   <svg
                     className="w-5 h-5"
@@ -182,7 +190,7 @@ const Login: React.FC = () => {
                       clipRule="evenodd"
                     />
                   </svg>
-                </a>
+                </button>
               </div>
             </div>
           </div>

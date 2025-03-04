@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { User, UserRole } from "../types";
 import {
   createUserWithEmailAndPassword,
+  FacebookAuthProvider,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -185,6 +186,36 @@ export const useAuthStore = create<AuthState>((set) => ({
   //   }
   // },
 
+  signInWithFacebook: async () => {
+    set({ isLoading: true });
+
+    try {
+      await signInWithPopup(auth, new FacebookAuthProvider()).then((res) => {
+        console.log(res.user);
+
+        // In a real app, you would save the user to the database
+
+        const user = {
+          id: res.user.uid || "",
+          email: res.user.email || "",
+          name: res.user.displayName || "",
+          profilePicture: res.user.photoURL || "",
+          role: "traveller",
+          createdAt: new Date(),
+          isActive: true,
+        };
+
+        set({
+          user: user,
+          isAuthenticated: true,
+          isLoading: false,
+        });
+      });
+    } catch (error) {
+      set({ isLoading: false });
+      throw error;
+    }
+  },
   logout: () => {
     set({
       user: null,
