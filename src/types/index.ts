@@ -1,4 +1,4 @@
-export type UserRole = 'sender' | 'traveller' | 'admin';
+export type UserRole = "sender" | "traveller" | "admin";
 
 export interface User {
   id: string;
@@ -23,7 +23,7 @@ export interface Trip {
   availableSpace: number; // in kg
   pricePerKg: number;
   currency: string;
-  status: 'active' | 'completed' | 'cancelled';
+  status: "active" | "completed" | "cancelled";
   description?: string;
   createdAt: Date;
 }
@@ -36,8 +36,8 @@ export interface Booking {
   luggageSize: number; // in kg
   luggageDescription: string;
   totalPrice: number;
-  status: 'pending' | 'confirmed' | 'cancelled' | 'completed';
-  paymentStatus: 'pending' | 'paid' | 'refunded';
+  status: "pending" | "confirmed" | "cancelled" | "completed";
+  paymentStatus: "pending" | "paid" | "refunded";
   createdAt: Date;
 }
 
@@ -47,7 +47,7 @@ export interface Review {
   bookingId: string;
   reviewerId: string;
   reviewerName: string;
-  reviewerRole: 'sender' | 'traveller';
+  reviewerRole: "sender" | "traveller";
   targetId: string;
   rating: number;
   comment: string;
@@ -59,7 +59,7 @@ export interface Notification {
   userId: string;
   title: string;
   message: string;
-  type: 'booking' | 'trip' | 'payment' | 'system';
+  type: "booking" | "trip" | "payment" | "system";
   isRead: boolean;
   createdAt: Date;
 }
