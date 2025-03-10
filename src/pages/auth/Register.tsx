@@ -4,8 +4,8 @@ import { useForm } from "react-hook-form";
 import { Luggage } from "lucide-react";
 import { useAuthStore } from "../../store/authStore";
 import { UserRole } from "../../types";
-import Input from "../../components/ui/Input";
-import Button from "../../components/ui/Button";
+import { Input } from "../../components/ui/Input";
+import { Button } from "../../components/ui/Button";
 
 interface RegisterFormData {
   name: string;

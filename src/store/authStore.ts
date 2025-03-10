@@ -25,36 +25,36 @@ interface AuthState {
 }
 
 // Mock user data for demonstration
-const mockUsers: User[] = [
-  {
-    id: "1",
-    email: "sender@example.com",
-    name: "John Sender",
-    role: "sender",
-    profilePicture:
-      "https://images.unsplash.com/photo-1599566150163-29194dcaad36",
-    createdAt: new Date(),
-    isActive: true,
-  },
-  {
-    id: "2",
-    email: "traveller@example.com",
-    name: "Jane Traveller",
-    role: "traveller",
-    profilePicture:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
-    createdAt: new Date(),
-    isActive: true,
-  },
-  {
-    id: "3",
-    email: "admin@example.com",
-    name: "Admin User",
-    role: "admin",
-    createdAt: new Date(),
-    isActive: true,
-  },
-];
+// const mockUsers: User[] = [
+//   {
+//     id: "1",
+//     email: "sender@example.com",
+//     name: "John Sender",
+//     role: "sender",
+//     profilePicture:
+//       "https://images.unsplash.com/photo-1599566150163-29194dcaad36",
+//     createdAt: new Date(),
+//     isActive: true,
+//   },
+//   {
+//     id: "2",
+//     email: "traveller@example.com",
+//     name: "Jane Traveller",
+//     role: "traveller",
+//     profilePicture:
+//       "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
+//     createdAt: new Date(),
+//     isActive: true,
+//   },
+//   {
+//     id: "3",
+//     email: "admin@example.com",
+//     name: "Admin User",
+//     role: "admin",
+//     createdAt: new Date(),
+//     isActive: true,
+//   },
+// ];
 
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
@@ -110,8 +110,6 @@ export const useAuthStore = create<AuthState>((set) => ({
           isActive: true,
         };
 
-        // In a real app, you would save the user to the database
-
         set({
           user: newUser,
           isAuthenticated: true,
@@ -133,7 +131,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 
         // In a real app, you would save the user to the database
 
-        const user = {
+        const user: User = {
           id: res.user.uid || "",
           email: res.user.email || "",
           name: res.user.displayName || "",
@@ -195,7 +193,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 
         // In a real app, you would save the user to the database
 
-        const user = {
+        const user: User = {
           id: res.user.uid || "",
           email: res.user.email || "",
           name: res.user.displayName || "",

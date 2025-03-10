@@ -3,8 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Luggage } from "lucide-react";
 import { useAuthStore } from "../../store/authStore";
-import Input from "../../components/ui/Input";
-import Button from "../../components/ui/Button";
+import { Input } from "../../components/ui/Input";
+import { Button } from "../../components/ui/Button";
 
 interface LoginFormData {
   email: string;
