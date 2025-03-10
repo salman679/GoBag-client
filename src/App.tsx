@@ -28,6 +28,11 @@ import RequestsPage from "./pages/traveller/dashboard/components/requests/Reques
 import MessagesPage from "./pages/traveller/dashboard/components/messages/Messages";
 import TripsPage from "./pages/traveller/dashboard/components/trips/Trips";
 import TrustPage from "./pages/traveller/dashboard/components/trust/Trust";
+import SenderDashboard from "./pages/sender/dashboard/components/Dashboard";
+import SenderDashboardLayout from "./pages/sender/dashboard/Dashboard-layout";
+import NewRequest from "./pages/sender/dashboard/components/newRequest/NewRequest";
+import MyRequests from "./pages/sender/dashboard/components/myRequest/MyRequest";
+import Profile from "./pages/sender/dashboard/components/profile/Profile";
 
 // Protected Route Component
 interface ProtectedRouteProps {
@@ -152,6 +157,46 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={["sender"]}>
                   <SenderBookings />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/sender/dashboard"
+              element={
+                <ProtectedRoute allowedRoles={["sender"]}>
+                  <SenderDashboardLayout>
+                    <SenderDashboard />
+                  </SenderDashboardLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/sender/new-request"
+              element={
+                <ProtectedRoute allowedRoles={["sender"]}>
+                  <SenderDashboardLayout>
+                    <NewRequest />
+                  </SenderDashboardLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/sender/requests"
+              element={
+                <ProtectedRoute allowedRoles={["sender"]}>
+                  <SenderDashboardLayout>
+                    <MyRequests />
+                  </SenderDashboardLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/sender/profile"
+              element={
+                <ProtectedRoute allowedRoles={["sender"]}>
+                  <SenderDashboardLayout>
+                    <Profile />
+                  </SenderDashboardLayout>
                 </ProtectedRoute>
               }
             />

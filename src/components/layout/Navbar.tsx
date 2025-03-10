@@ -94,7 +94,13 @@ const Navbar: React.FC = () => {
                   {isMenuOpen && (
                     <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10">
                       <Link
-                        to="/traveller/dashboard"
+                        to={`${
+                          isAuthenticated && user?.role === "traveller"
+                            ? "/traveller/dashboard"
+                            : isAuthenticated && user?.role === "sender"
+                            ? "/sender/dashboard"
+                            : "/admin/dashboard"
+                        }`}
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                         onClick={() => setIsMenuOpen(false)}
                       >
@@ -206,7 +212,13 @@ const Navbar: React.FC = () => {
               </div>
               <div className="mt-3 space-y-1">
                 <Link
-                  to="/traveller/dashboard"
+                  to={`${
+                    isAuthenticated && user?.role === "traveller"
+                      ? "/traveller/dashboard"
+                      : isAuthenticated && user?.role === "sender"
+                      ? "/sender/dashboard"
+                      : "/admin/dashboard"
+                  }`}
                   className="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100"
                   onClick={() => setIsMenuOpen(false)}
                 >
