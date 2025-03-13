@@ -9,6 +9,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../firebase/firebase.config";
+import { createUser, getUserByEmail } from "@/services/authService";
 
 interface AuthState {
   user: User | null;
@@ -24,38 +25,6 @@ interface AuthState {
   logout: () => void;
 }
 
-// Mock user data for demonstration
-// const mockUsers: User[] = [
-//   {
-//     id: "1",
-//     email: "sender@example.com",
-//     name: "John Sender",
-//     role: "sender",
-//     profilePicture:
-//       "https://images.unsplash.com/photo-1599566150163-29194dcaad36",
-//     createdAt: new Date(),
-//     isActive: true,
-//   },
-//   {
-//     id: "2",
-//     email: "traveller@example.com",
-//     name: "Jane Traveller",
-//     role: "traveller",
-//     profilePicture:
-//       "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
-//     createdAt: new Date(),
-//     isActive: true,
-//   },
-//   {
-//     id: "3",
-//     email: "admin@example.com",
-//     name: "Admin User",
-//     role: "admin",
-//     createdAt: new Date(),
-//     isActive: true,
-//   },
-// ];
-
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   isAuthenticated: false,
@@ -65,27 +34,38 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ isLoading: true });
 
     try {
-      // Simulate API call
-      await signInWithEmailAndPassword(auth, email, password).then((res) => {
-        //this is fake, here will be from database
-        const user: User = {
-          id: res.user.uid,
-          email: res.user.email || "",
-          name: res.user.displayName || "",
-          role: "traveller",
-          createdAt: new Date(),
-          isActive: true,
-        };
+      // Authenticate with Firebase
+      await signInWithEmailAndPassword(auth, email, password);
 
-        set({
-          user,
-          isAuthenticated: true,
-          isLoading: false,
-        });
+      const {
+        displayName,
+        email: userEmail,
+        photoURL,
+        role,
+      } = await getUserByEmail(email);
+
+      const user: User = {
+        name: displayName,
+        email: userEmail,
+        phoneNumber: "", // Optional, may be fetched from Firebase later
+        profilePicture: photoURL || "",
+        role,
+        isVerified: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      // Update Zustand store
+      set({
+        user,
+        isAuthenticated: true,
+        isLoading: false,
       });
+
+      console.log("User logged in:", user);
     } catch (error) {
+      console.error("Login Error:", error);
       set({ isLoading: false });
-      throw error;
     }
   },
 
@@ -98,23 +78,26 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ isLoading: true });
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password).then(() => {
-        updateProfile(auth.currentUser, { displayName: name });
+      await createUserWithEmailAndPassword(auth, email, password);
+      await updateProfile(auth.currentUser, { displayName: name });
 
-        const newUser: User = {
-          id: auth.currentUser.uid,
-          email,
-          name,
-          role,
-          createdAt: new Date(),
-          isActive: true,
-        };
+      const newUser: User = {
+        name,
+        email,
+        role,
+        isVerified: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
 
-        set({
-          user: newUser,
-          isAuthenticated: true,
-          isLoading: false,
-        });
+      console.log(password);
+
+      await createUser(newUser);
+
+      set({
+        user: newUser,
+        isAuthenticated: true,
+        isLoading: false,
       });
     } catch (error) {
       set({ isLoading: false });
@@ -126,88 +109,59 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ isLoading: true });
 
     try {
-      await signInWithPopup(auth, new GoogleAuthProvider()).then((res) => {
-        console.log(res.user);
+      const res = await signInWithPopup(auth, new GoogleAuthProvider());
+      const { email, displayName, photoURL } = res.user;
 
-        // In a real app, you would save the user to the database
+      const user: User = {
+        email: email || "",
+        name: displayName || "",
+        profilePicture: photoURL || "",
+        role: "traveler",
+        isVerified: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
 
-        const user: User = {
-          id: res.user.uid || "",
-          email: res.user.email || "",
-          name: res.user.displayName || "",
-          profilePicture: res.user.photoURL || "",
-          role: "traveller",
-          createdAt: new Date(),
-          isActive: true,
-        };
+      //user data to real database
+      await createUser(user);
 
-        set({
-          user: user,
-          isAuthenticated: true,
-          isLoading: false,
-        });
+      set({
+        user,
+        isAuthenticated: true,
+        isLoading: false,
       });
+
+      console.log("User signed in:", user);
     } catch (error) {
+      console.error("Google Sign-In Error:", error);
       set({ isLoading: false });
-      throw error;
     }
   },
-
-  // signUpWithGoogle: async () => {
-  //   set({ isLoading: true });
-
-  //   try {
-  //     await signInWithPopup(auth, new GoogleAuthProvider()).then((res) => {
-  //       console.log(res.user);
-
-  //       // In a real app, you would save the user to the database
-
-  //       const user = {
-  //         id: res.user.uid || "",
-  //         email: res.user.email || "",
-  //         name: res.user.displayName || "",
-  //         profilePicture: res.user.photoURL || "",
-  //         role: "traveller",
-  //         createdAt: new Date(),
-  //         isActive: true,
-  //       };
-
-  //       set({
-  //         user: user,
-  //         isAuthenticated: true,
-  //         isLoading: false,
-  //       });
-  //     });
-  //   } catch (error) {
-  //     set({ isLoading: false });
-  //     throw error;
-  //   }
-  // },
 
   signInWithFacebook: async () => {
     set({ isLoading: true });
 
     try {
-      await signInWithPopup(auth, new FacebookAuthProvider()).then((res) => {
-        console.log(res.user);
+      const res = await signInWithPopup(auth, new FacebookAuthProvider());
+      const { email, displayName, photoURL } = res.user;
 
-        // In a real app, you would save the user to the database
+      const user: User = {
+        email: email || "",
+        name: displayName || "",
+        profilePicture: photoURL || "",
+        role: "traveler",
+        isVerified: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
 
-        const user: User = {
-          id: res.user.uid || "",
-          email: res.user.email || "",
-          name: res.user.displayName || "",
-          profilePicture: res.user.photoURL || "",
-          role: "traveller",
-          createdAt: new Date(),
-          isActive: true,
-        };
+      //user data to real database
+      await createUser(user);
 
-        set({
-          user: user,
-          isAuthenticated: true,
-          isLoading: false,
-        });
+      set({
+        user: user,
+        isAuthenticated: true,
+        isLoading: false,
       });
     } catch (error) {
       set({ isLoading: false });

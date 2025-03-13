@@ -16,7 +16,8 @@ interface RegisterFormData {
 }
 
 const Register: React.FC = () => {
-  const { register, isLoading, signInWithGoogle } = useAuthStore();
+  const { register, isLoading, signInWithGoogle, signInWithFacebook } =
+    useAuthStore();
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
 
@@ -38,7 +39,7 @@ const Register: React.FC = () => {
       setError(null);
       await register(data.email, data.password, data.name, data.role);
       navigate("/");
-    } catch (err) {
+    } catch {
       setError("Registration failed. Please try again.");
     }
   };
@@ -46,6 +47,15 @@ const Register: React.FC = () => {
   const handleGoogleLogin = async () => {
     try {
       await signInWithGoogle();
+      navigate("/");
+    } catch (error) {
+      console.error("Error signing in with Google:", error);
+    }
+  };
+
+  const handleFacebookLogin = async () => {
+    try {
+      await signInWithFacebook();
       navigate("/");
     } catch (error) {
       console.error("Error signing in with Google:", error);
@@ -161,17 +171,17 @@ const Register: React.FC = () => {
                 </div>
                 <div className="flex items-center">
                   <input
-                    id="role-traveller"
+                    id="role-traveler"
                     type="radio"
-                    value="traveller"
+                    value="traveler"
                     className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
                     {...registerField("role")}
                   />
                   <label
-                    htmlFor="role-traveller"
+                    htmlFor="role-traveler"
                     className="ml-3 block text-sm font-medium text-gray-700"
                   >
-                    Traveller (I want to offer luggage space)
+                    Traveler (I want to offer luggage space)
                   </label>
                 </div>
               </div>
@@ -240,11 +250,8 @@ const Register: React.FC = () => {
                 </button>
               </div>
 
-              <div>
-                <a
-                  href="#"
-                  className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
-                >
+              <div onClick={handleFacebookLogin}>
+                <button className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
                   <span className="sr-only">Sign up with Facebook</span>
                   <svg
                     className="w-5 h-5"
@@ -258,7 +265,7 @@ const Register: React.FC = () => {
                       clipRule="evenodd"
                     />
                   </svg>
-                </a>
+                </button>
               </div>
             </div>
           </div>

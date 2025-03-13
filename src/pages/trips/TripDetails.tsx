@@ -70,7 +70,7 @@ const TripDetails: React.FC = () => {
 
       await bookTrip(
         trip.id,
-        user.id,
+        user._id,
         user.name,
         luggageSize,
         luggageDescription

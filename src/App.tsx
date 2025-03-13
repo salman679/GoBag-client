@@ -77,23 +77,23 @@ function App() {
             <Route
               path="/traveller/trips/create"
               element={
-                <ProtectedRoute allowedRoles={["traveller"]}>
+                <ProtectedRoute allowedRoles={["traveler"]}>
                   <CreateTrip />
                 </ProtectedRoute>
               }
             />
             <Route
-              path="/traveller/trips"
+              path="/traveler/trips"
               element={
-                <ProtectedRoute allowedRoles={["traveller"]}>
+                <ProtectedRoute allowedRoles={["traveler"]}>
                   <TravellerTrips />
                 </ProtectedRoute>
               }
             />
             <Route
-              path="/traveller/dashboard"
+              path="/traveler/dashboard"
               element={
-                <ProtectedRoute allowedRoles={["traveller"]}>
+                <ProtectedRoute allowedRoles={["traveler"]}>
                   <DashboardLayout>
                     <Dashboard />
                   </DashboardLayout>
@@ -101,9 +101,9 @@ function App() {
               }
             />
             <Route
-              path="/traveller/dashboard/earnings"
+              path="/traveler/dashboard/earnings"
               element={
-                <ProtectedRoute allowedRoles={["traveller"]}>
+                <ProtectedRoute allowedRoles={["traveler"]}>
                   <DashboardLayout>
                     <EarningsPage />
                   </DashboardLayout>
@@ -111,9 +111,9 @@ function App() {
               }
             />
             <Route
-              path="/traveller/dashboard/requests"
+              path="/traveler/dashboard/requests"
               element={
-                <ProtectedRoute allowedRoles={["traveller"]}>
+                <ProtectedRoute allowedRoles={["traveler"]}>
                   <DashboardLayout>
                     <RequestsPage />
                   </DashboardLayout>
@@ -121,9 +121,9 @@ function App() {
               }
             />
             <Route
-              path="/traveller/dashboard/messages"
+              path="/traveler/dashboard/messages"
               element={
-                <ProtectedRoute allowedRoles={["traveller"]}>
+                <ProtectedRoute allowedRoles={["traveler"]}>
                   <DashboardLayout>
                     <MessagesPage />
                   </DashboardLayout>
@@ -131,9 +131,9 @@ function App() {
               }
             />
             <Route
-              path="/traveller/dashboard/trips"
+              path="/traveler/dashboard/trips"
               element={
-                <ProtectedRoute allowedRoles={["traveller"]}>
+                <ProtectedRoute allowedRoles={["traveler"]}>
                   <DashboardLayout>
                     <TripsPage />
                   </DashboardLayout>
@@ -141,9 +141,9 @@ function App() {
               }
             />
             <Route
-              path="/traveller/dashboard/trust"
+              path="/traveler/dashboard/trust"
               element={
-                <ProtectedRoute allowedRoles={["traveller"]}>
+                <ProtectedRoute allowedRoles={["traveler"]}>
                   <DashboardLayout>
                     <TrustPage />
                   </DashboardLayout>
@@ -218,7 +218,7 @@ function App() {
                 <ProtectedRoute>
                   {user?.role === "admin" ? (
                     <Navigate to="/admin/dashboard" />
-                  ) : user?.role === "traveller" ? (
+                  ) : user?.role === "traveler" ? (
                     <Navigate to="/traveller/trips" />
                   ) : (
                     <Navigate to="/sender/bookings" />

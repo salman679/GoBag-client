@@ -20,20 +20,20 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 const navigation = [
   // { name: "Dashboard", href: "/", icon: Home },
-  { name: "Trips", href: "/traveller/dashboard/trips", icon: Calendar },
+  { name: "Trips", href: "/traveler/dashboard/trips", icon: Calendar },
   {
     name: "Shipping Requests",
-    href: "/traveller/dashboard/requests",
+    href: "/traveler/dashboard/requests",
     icon: Package,
   },
-  { name: "Earnings", href: "/traveller/dashboard/earnings", icon: CreditCard },
+  { name: "Earnings", href: "/traveler/dashboard/earnings", icon: CreditCard },
   {
     name: "Messages",
-    href: "/traveller/dashboard/messages",
+    href: "/traveler/dashboard/messages",
     icon: MessageSquare,
   },
-  { name: "Trust & Safety", href: "/traveller/dashboard/trust", icon: Shield },
-  { name: "Settings", href: "/traveller/dashboard/settings", icon: Settings },
+  { name: "Trust & Safety", href: "/traveler/dashboard/trust", icon: Shield },
+  { name: "Settings", href: "/traveler/dashboard/settings", icon: Settings },
 ];
 
 interface DashboardLayoutProps {

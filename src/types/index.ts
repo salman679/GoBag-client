@@ -1,14 +1,15 @@
-export type UserRole = "sender" | "traveller" | "admin";
+export type UserRole = "sender" | "traveler" | "admin";
 
 export interface User {
-  id: string;
-  email: string;
   name: string;
-  role: UserRole;
-  profilePicture?: string;
+  email: string;
   phoneNumber?: string;
+  profilePicture?: string;
+  role: UserRole;
+  password?: string;
+  isVerified: boolean;
   createdAt: Date;
-  isActive: boolean;
+  updatedAt: Date;
 }
 
 export interface Trip {
