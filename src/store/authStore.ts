@@ -1,9 +1,13 @@
 import { create } from "zustand";
 import { User, UserRole } from "../types";
 import {
+  browserLocalPersistence,
+  browserSessionPersistence,
   createUserWithEmailAndPassword,
   FacebookAuthProvider,
   GoogleAuthProvider,
+  sendPasswordResetEmail,
+  setPersistence,
   signInWithEmailAndPassword,
   signInWithPopup,
   updateProfile,
@@ -15,13 +19,20 @@ interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (
+    email: string,
+    password: string,
+    rememberMe: boolean
+  ) => Promise<void>;
   register: (
     email: string,
     password: string,
     name: string,
     role: UserRole
   ) => Promise<void>;
+  signInWithGoogle: () => void;
+  signInWithFacebook: () => void;
+  sendPasswordResetEmail: (email: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -30,10 +41,16 @@ export const useAuthStore = create<AuthState>((set) => ({
   isAuthenticated: false,
   isLoading: false,
 
-  login: async (email: string, password: string) => {
+  login: async (email: string, password: string, rememberMe: boolean) => {
     set({ isLoading: true });
 
     try {
+      //user data will save in localstorage
+      await setPersistence(
+        auth,
+        rememberMe ? browserLocalPersistence : browserSessionPersistence
+      );
+
       // Authenticate with Firebase
       await signInWithEmailAndPassword(auth, email, password);
 
@@ -47,7 +64,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       const user: User = {
         name: displayName,
         email: userEmail,
-        phoneNumber: "", // Optional, may be fetched from Firebase later
+        phoneNumber: "",
         profilePicture: photoURL || "",
         role,
         isVerified: false,
@@ -89,8 +106,6 @@ export const useAuthStore = create<AuthState>((set) => ({
         createdAt: new Date(),
         updatedAt: new Date(),
       };
-
-      console.log(password);
 
       await createUser(newUser);
 
@@ -166,6 +181,15 @@ export const useAuthStore = create<AuthState>((set) => ({
     } catch (error) {
       set({ isLoading: false });
       throw error;
+    }
+  },
+
+  sendPasswordResetEmail: async (email: string) => {
+    try {
+      await sendPasswordResetEmail(auth, email);
+      console.log("Password reset email sent to:", email);
+    } catch (error) {
+      console.error("Error sending password reset email:", error);
     }
   },
   logout: () => {

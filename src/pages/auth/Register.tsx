@@ -201,14 +201,14 @@ const Register: React.FC = () => {
               >
                 I agree to the{" "}
                 <Link
-                  to="/terms"
+                  to="/terms-of-service"
                   className="font-medium text-blue-600 hover:text-blue-500"
                 >
                   Terms of Service
                 </Link>{" "}
                 and{" "}
                 <Link
-                  to="/privacy"
+                  to="/privacy-policy"
                   className="font-medium text-blue-600 hover:text-blue-500"
                 >
                   Privacy Policy

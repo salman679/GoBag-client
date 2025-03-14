@@ -16,6 +16,7 @@ const Login: React.FC = () => {
     useAuthStore();
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
+  const [rememberMe, setRememberMe] = useState(false);
 
   const {
     register,
@@ -26,7 +27,7 @@ const Login: React.FC = () => {
   const onSubmit = async (data: LoginFormData) => {
     try {
       setError(null);
-      await login(data.email, data.password);
+      await login(data.email, data.password, rememberMe);
 
       navigate("/");
     } catch {
@@ -120,6 +121,8 @@ const Login: React.FC = () => {
                 <input
                   id="remember-me"
                   name="remember-me"
+                  checked={rememberMe}
+                  onChange={() => setRememberMe(!rememberMe)}
                   type="checkbox"
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
@@ -132,12 +135,12 @@ const Login: React.FC = () => {
               </div>
 
               <div className="text-sm">
-                <a
-                  href="#"
+                <Link
+                  to={"/forgot-password"}
                   className="font-medium text-blue-600 hover:text-blue-500"
                 >
                   Forgot your password?
-                </a>
+                </Link>
               </div>
             </div>
 

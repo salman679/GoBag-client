@@ -33,6 +33,10 @@ import SenderDashboardLayout from "./pages/sender/dashboard/Dashboard-layout";
 import NewRequest from "./pages/sender/dashboard/components/newRequest/NewRequest";
 import MyRequests from "./pages/sender/dashboard/components/myRequest/MyRequest";
 import Profile from "./pages/sender/dashboard/components/profile/Profile";
+import ForgotPassword from "./pages/auth/ForgotPassword";
+import TermsOfService from "./pages/terms/TermsOfService";
+import PrivacyPolicy from "./pages/terms/PrivacyPolicy";
+import UserDashboard from "./pages/user/UserDashboard";
 
 // Protected Route Component
 interface ProtectedRouteProps {
@@ -69,13 +73,19 @@ function App() {
             {/* Public Routes */}
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/register" element={<Register />} />
             <Route path="/trips" element={<TripsList />} />
             <Route path="/trips/:id" element={<TripDetails />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
-            {/* Traveller Routes */}
+            {/* user Routes */}
+            <Route path="/user/dashboard" element={<UserDashboard />} />
+
+            {/* Traveler Routes */}
             <Route
-              path="/traveller/trips/create"
+              path="/traveler/trips/create"
               element={
                 <ProtectedRoute allowedRoles={["traveler"]}>
                   <CreateTrip />
