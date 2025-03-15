@@ -21,9 +21,12 @@ import AdminDashboard from "./pages/admin/Dashboard";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import TermsOfService from "./pages/terms/TermsOfService";
 import PrivacyPolicy from "./pages/terms/PrivacyPolicy";
-import UserDashboard from "./pages/user/UserDashboard";
 import SenderBookings from "./pages/sender/SenderBookings";
 import TravelerTrips from "./pages/traveller/TravelerTrips";
+import UserDashboardLayout from "./pages/user/UserDashboardLayout";
+import UserDashboard from "./pages/user/components/UserDashboard";
+import TripsPage from "./pages/user/components/trips/Trips";
+import MyRequest from "./pages/user/components/myRequest/MyRequest";
 
 // Protected Route Component
 interface ProtectedRouteProps {
@@ -35,14 +38,22 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   children,
   allowedRoles,
 }) => {
-  const { isAuthenticated, user } = useAuthStore();
+  const { isAuthenticated, user, isLoading } = useAuthStore();
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" />;
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <span className="loading loading-dots loading-lg"></span>
+      </div>
+    );
   }
 
-  if (allowedRoles && user && !allowedRoles.includes(user.role)) {
-    return <Navigate to="/" />;
+  if (!isAuthenticated || !user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (allowedRoles && !allowedRoles.includes(user.role)) {
+    return <Navigate to="/" replace />;
   }
 
   return <>{children}</>;
@@ -200,7 +211,29 @@ function App() {
               path="/user/dashboard"
               element={
                 <ProtectedRoute allowedRoles={["user"]}>
-                  <UserDashboard />
+                  <UserDashboardLayout>
+                    <UserDashboard />
+                  </UserDashboardLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/user/trips"
+              element={
+                <ProtectedRoute allowedRoles={["user"]}>
+                  <UserDashboardLayout>
+                    <TripsPage />
+                  </UserDashboardLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/user/packages"
+              element={
+                <ProtectedRoute allowedRoles={["user"]}>
+                  <UserDashboardLayout>
+                    <MyRequest />
+                  </UserDashboardLayout>
                 </ProtectedRoute>
               }
             />

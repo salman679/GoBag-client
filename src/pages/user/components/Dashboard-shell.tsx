@@ -12,13 +12,14 @@ import {
   CreditCard,
   Settings,
   HelpCircle,
-  Menu,
+  // Menu,
   ChevronLeft,
   ChevronRight,
+  User,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { useLocation } from "react-router-dom";
+// import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Link, useLocation } from "react-router-dom";
 
 interface DashboardShellProps {
   children: React.ReactNode;
@@ -29,7 +30,7 @@ export function DashboardShell({ children, className }: DashboardShellProps) {
   const { pathname } = useLocation();
   const [isMobile, setIsMobile] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [mobileSheetOpen, setMobileSheetOpen] = useState(false);
+  // const [mobileSheetOpen, setMobileSheetOpen] = useState(false);
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -45,14 +46,21 @@ export function DashboardShell({ children, className }: DashboardShellProps) {
   }, []);
 
   const menuItems = [
-    { name: "Dashboard", href: "/", icon: Home },
-    { name: "My Trips", href: "/trips", icon: Plane },
-    { name: "My Packages", href: "/packages", icon: Luggage },
+    { name: "Dashboard", href: "/user/dashboard", icon: Home },
+    { name: "My Trips", href: "/user/trips", icon: Plane },
+    { name: "My Packages", href: "/user/packages", icon: Luggage },
     { name: "Messages", href: "/messages", icon: MessageSquare },
     { name: "Notifications", href: "/notifications", icon: Bell },
     { name: "Payments", href: "/payments", icon: CreditCard },
     { name: "Settings", href: "/settings", icon: Settings },
     { name: "Help", href: "/help", icon: HelpCircle },
+  ];
+
+  const mobileNavItems = [
+    { name: "Home", href: "/user/dashboard", icon: Home },
+    { name: "Trips", href: "/user/trips", icon: Plane },
+    { name: "Packages", href: "/user/packages", icon: Luggage },
+    { name: "Account", href: "/settings", icon: User },
   ];
 
   const toggleSidebar = () => {
@@ -89,9 +97,9 @@ export function DashboardShell({ children, className }: DashboardShellProps) {
               <div className={cn("px-3 py-2", !sidebarOpen && "px-1")}>
                 <nav className="space-y-1">
                   {menuItems.map((item) => (
-                    <a
+                    <Link
                       key={item.name}
-                      href={item.href}
+                      to={item.href}
                       className={cn(
                         "flex items-center rounded-md py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
                         pathname === item.href
@@ -103,7 +111,7 @@ export function DashboardShell({ children, className }: DashboardShellProps) {
                     >
                       <item.icon className="h-4 w-4" />
                       {sidebarOpen && <span>{item.name}</span>}
-                    </a>
+                    </Link>
                   ))}
                 </nav>
               </div>
@@ -127,7 +135,7 @@ export function DashboardShell({ children, className }: DashboardShellProps) {
       <div className="flex-1 flex flex-col">
         {/* Header */}
         <div className="flex items-center gap-4 bg-background px-4">
-          {isMobile ? (
+          {/* {isMobile ? (
             <Sheet open={mobileSheetOpen} onOpenChange={setMobileSheetOpen}>
               <SheetTrigger asChild>
                 <Button variant="outline">
@@ -166,14 +174,37 @@ export function DashboardShell({ children, className }: DashboardShellProps) {
             </Sheet>
           ) : (
             ""
-            // <Button variant="outline" onClick={toggleSidebar}>
-            //   {/* <Menu className="h-5 w-5" /> */}
-            //   <span className="sr-only">Toggle Sidebar</span>
-            // </Button>
-          )}
+          )} */}
         </div>
 
-        <main className={cn("flex-1 p-4 md:p-8", className)}>{children}</main>
+        <main
+          className={cn("flex-1 p-4 md:p-8", isMobile && "pb-20", className)}
+        >
+          {children}
+        </main>
+
+        {/* Bottom navigation bar for mobile */}
+        {isMobile && (
+          <div className="fixed bottom-0 left-0 right-0 border-t bg-background z-50">
+            <div className="flex items-center justify-around h-16">
+              {mobileNavItems.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className={cn(
+                    "flex flex-col items-center justify-center w-full h-full px-2 text-xs",
+                    pathname === item.href
+                      ? "text-primary font-medium"
+                      : "text-muted-foreground"
+                  )}
+                >
+                  <item.icon className="h-5 w-5 mb-1" />
+                  <span>{item.name}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
