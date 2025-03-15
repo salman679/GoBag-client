@@ -28,7 +28,7 @@ const Register: React.FC = () => {
     formState: { errors },
   } = useForm<RegisterFormData>({
     defaultValues: {
-      role: "sender",
+      role: "user",
     },
   });
 
@@ -149,7 +149,7 @@ const Register: React.FC = () => {
               />
             </div>
 
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 I want to register as
               </label>
@@ -185,7 +185,7 @@ const Register: React.FC = () => {
                   </label>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <div className="flex items-center">
               <input

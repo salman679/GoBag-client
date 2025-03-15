@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import {
   Plus,
-  MapPin,
+  // MapPin,
   Calendar,
   Weight,
   DollarSign,
@@ -12,11 +12,11 @@ import {
 } from "lucide-react";
 import { useTripStore } from "../../store/tripStore";
 import { useAuthStore } from "../../store/authStore";
-import { Trip, Booking } from "../../types";
+import { Trip } from "../../types";
 import { Button } from "../../components/ui/Button";
 import { Card, CardHeader, CardContent } from "../../components/ui/Card";
 
-const TravellerTrips: React.FC = () => {
+const TravelerTrips: React.FC = () => {
   const { trips, bookings, fetchTrips, updateTripStatus, isLoading } =
     useTripStore();
   const { user } = useAuthStore();
@@ -31,9 +31,7 @@ const TravellerTrips: React.FC = () => {
 
   useEffect(() => {
     if (trips.length > 0 && user) {
-      const filteredTrips = trips.filter(
-        (trip) => trip.travellerId === user.id
-      );
+      const filteredTrips = trips.filter((trip) => trip.travelerId === user.id);
       setMyTrips(filteredTrips);
     }
   }, [trips, user]);
@@ -129,7 +127,7 @@ const TravellerTrips: React.FC = () => {
           </p>
           {activeTab === "active" && (
             <div className="mt-6">
-              <Link to="/traveller/trips/create">
+              <Link to="/traveler/trips/create">
                 <Button>
                   <Plus className="h-5 w-5 mr-2" />
                   Create New Trip
@@ -325,4 +323,4 @@ const TravellerTrips: React.FC = () => {
   );
 };
 
-export default TravellerTrips;
+export default TravelerTrips;

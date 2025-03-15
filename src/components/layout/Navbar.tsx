@@ -97,8 +97,8 @@ const Navbar: React.FC = () => {
                         to={`${
                           isAuthenticated && user?.role === "traveler"
                             ? "/traveler/dashboard"
-                            : isAuthenticated && user?.role === "sender"
-                            ? "/sender/dashboard"
+                            : isAuthenticated && user?.role === "user"
+                            ? "/user/dashboard"
                             : "/admin/dashboard"
                         }`}
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -215,8 +215,8 @@ const Navbar: React.FC = () => {
                   to={`${
                     isAuthenticated && user?.role === "traveler"
                       ? "/traveler/dashboard"
-                      : isAuthenticated && user?.role === "sender"
-                      ? "/sender/dashboard"
+                      : isAuthenticated && user?.role === "user"
+                      ? "/user/dashboard"
                       : "/admin/dashboard"
                   }`}
                   className="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100"

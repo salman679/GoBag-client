@@ -21,7 +21,7 @@ export function DashboardHeader({
         <h1 className="text-2xl font-bold tracking-tight md:text-3xl">
           {heading}
         </h1>
-        {text && <p className="text-muted-foreground">{text}</p>}
+        {text && <p className="text-muted-foreground mb-2">{text}</p>}
       </div>
       <div className="flex items-center gap-2">
         <Button>

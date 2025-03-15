@@ -17,22 +17,7 @@ import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import TripsList from "./pages/trips/TripsList";
 import TripDetails from "./pages/trips/TripDetails";
-import CreateTrip from "./pages/traveller/CreateTrip";
-import TravellerTrips from "./pages/traveller/TravellerTrips";
-import SenderBookings from "./pages/sender/SenderBookings";
 import AdminDashboard from "./pages/admin/Dashboard";
-import Dashboard from "./pages/traveller/dashboard/components/Dashboard";
-import DashboardLayout from "./pages/traveller/dashboard/Dashboard-layout";
-import EarningsPage from "./pages/traveller/dashboard/components/earnings/Earnings";
-import RequestsPage from "./pages/traveller/dashboard/components/requests/Requests";
-import MessagesPage from "./pages/traveller/dashboard/components/messages/Messages";
-import TripsPage from "./pages/traveller/dashboard/components/trips/Trips";
-import TrustPage from "./pages/traveller/dashboard/components/trust/Trust";
-import SenderDashboard from "./pages/sender/dashboard/components/Dashboard";
-import SenderDashboardLayout from "./pages/sender/dashboard/Dashboard-layout";
-import NewRequest from "./pages/sender/dashboard/components/newRequest/NewRequest";
-import MyRequests from "./pages/sender/dashboard/components/myRequest/MyRequest";
-import Profile from "./pages/sender/dashboard/components/profile/Profile";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import TermsOfService from "./pages/terms/TermsOfService";
 import PrivacyPolicy from "./pages/terms/PrivacyPolicy";
@@ -80,11 +65,8 @@ function App() {
             <Route path="/terms-of-service" element={<TermsOfService />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
-            {/* user Routes */}
-            <Route path="/user/dashboard" element={<UserDashboard />} />
-
             {/* Traveler Routes */}
-            <Route
+            {/* <Route
               path="/traveler/trips/create"
               element={
                 <ProtectedRoute allowedRoles={["traveler"]}>
@@ -96,7 +78,7 @@ function App() {
               path="/traveler/trips"
               element={
                 <ProtectedRoute allowedRoles={["traveler"]}>
-                  <TravellerTrips />
+                  <TravelerTrips />
                 </ProtectedRoute>
               }
             />
@@ -159,10 +141,10 @@ function App() {
                   </DashboardLayout>
                 </ProtectedRoute>
               }
-            />
+            /> */}
 
             {/* Sender Routes */}
-            <Route
+            {/* <Route
               path="/sender/bookings"
               element={
                 <ProtectedRoute allowedRoles={["sender"]}>
@@ -209,6 +191,16 @@ function App() {
                   </SenderDashboardLayout>
                 </ProtectedRoute>
               }
+            /> */}
+
+            {/* user Routes */}
+            <Route
+              path="/user/dashboard"
+              element={
+                <ProtectedRoute allowedRoles={["user"]}>
+                  <UserDashboard />
+                </ProtectedRoute>
+              }
             />
 
             {/* Admin Routes */}
@@ -228,10 +220,10 @@ function App() {
                 <ProtectedRoute>
                   {user?.role === "admin" ? (
                     <Navigate to="/admin/dashboard" />
-                  ) : user?.role === "traveler" ? (
-                    <Navigate to="/traveller/trips" />
                   ) : (
-                    <Navigate to="/sender/bookings" />
+                    // ) : user?.role === "traveler" ? (
+                    //   <Navigate to="/traveler/trips" />
+                    <Navigate to="/user/dashboard" />
                   )}
                 </ProtectedRoute>
               }

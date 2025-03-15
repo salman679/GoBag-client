@@ -1,4 +1,5 @@
-export type UserRole = "sender" | "traveler" | "admin";
+export type UserRole = "admin" | "user";
+//"sender" | "traveler" | "super-admin"
 
 export interface User {
   name: string;
@@ -14,9 +15,9 @@ export interface User {
 
 export interface Trip {
   id: string;
-  travellerId: string;
-  travellerName: string;
-  travellerProfilePic?: string;
+  travelerId: string;
+  travelerName: string;
+  travelerProfilePic?: string;
   departureLocation: string;
   destination: string;
   departureDate: Date;
