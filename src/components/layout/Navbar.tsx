@@ -40,21 +40,21 @@ const Navbar: React.FC = () => {
               >
                 Find Trips
               </Link>
-              {isAuthenticated && user?.role === "traveler" && (
-                <Link
-                  to="/traveler/trips"
-                  className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                >
-                  My Trips
-                </Link>
-              )}
-              {isAuthenticated && user?.role === "sender" && (
-                <Link
-                  to="/sender/bookings"
-                  className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                >
-                  My Bookings
-                </Link>
+              {isAuthenticated && (
+                <>
+                  <Link
+                    to="/user/trips"
+                    className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  >
+                    My Trips
+                  </Link>
+                  <Link
+                    to="/user/bookings"
+                    className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  >
+                    My Bookings
+                  </Link>
+                </>
               )}
               {isAuthenticated && user?.role === "admin" && (
                 <Link
@@ -95,9 +95,7 @@ const Navbar: React.FC = () => {
                     <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10">
                       <Link
                         to={`${
-                          isAuthenticated && user?.role === "traveler"
-                            ? "/traveler/dashboard"
-                            : isAuthenticated && user?.role === "user"
+                          isAuthenticated && user?.role === "user"
                             ? "/user/dashboard"
                             : "/admin/dashboard"
                         }`}
@@ -159,24 +157,20 @@ const Navbar: React.FC = () => {
             >
               Find Trips
             </Link>
-            {isAuthenticated && user?.role === "traveler" && (
-              <Link
-                to="/traveler/trips"
-                className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                My Trips
-              </Link>
-            )}
-            {isAuthenticated && user?.role === "sender" && (
-              <Link
-                to="/sender/bookings"
-                className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                My Bookings
-              </Link>
-            )}
+            <Link
+              to="/traveler/trips"
+              className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              My Trips
+            </Link>
+            <Link
+              to="/sender/bookings"
+              className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              My Bookings
+            </Link>
             {isAuthenticated && user?.role === "admin" && (
               <Link
                 to="/admin/dashboard"
@@ -213,9 +207,7 @@ const Navbar: React.FC = () => {
               <div className="mt-3 space-y-1">
                 <Link
                   to={`${
-                    isAuthenticated && user?.role === "traveler"
-                      ? "/traveler/dashboard"
-                      : isAuthenticated && user?.role === "user"
+                    isAuthenticated && user?.role === "user"
                       ? "/user/dashboard"
                       : "/admin/dashboard"
                   }`}

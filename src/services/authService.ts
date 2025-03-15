@@ -23,8 +23,12 @@ export const createUser = async (user: User) => {
 export const getUserByEmail = async (email: string) => {
   try {
     const response = await axios.get(`${API_URL}/api/v1/users/${email}`);
+    console.log(response.data);
+
     return response.data;
   } catch (error: any) {
+    console.log(error);
+
     console.error(
       "Error getting user by email:",
       error.response?.data || error.message

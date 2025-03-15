@@ -22,6 +22,8 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 import TermsOfService from "./pages/terms/TermsOfService";
 import PrivacyPolicy from "./pages/terms/PrivacyPolicy";
 import UserDashboard from "./pages/user/UserDashboard";
+import SenderBookings from "./pages/sender/SenderBookings";
+import TravelerTrips from "./pages/traveller/TravelerTrips";
 
 // Protected Route Component
 interface ProtectedRouteProps {
@@ -202,6 +204,22 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/user/bookings"
+              element={
+                <ProtectedRoute allowedRoles={["user"]}>
+                  <SenderBookings />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/user/trips"
+              element={
+                <ProtectedRoute allowedRoles={["user"]}>
+                  <TravelerTrips />
+                </ProtectedRoute>
+              }
+            />
 
             {/* Admin Routes */}
             <Route
@@ -221,8 +239,6 @@ function App() {
                   {user?.role === "admin" ? (
                     <Navigate to="/admin/dashboard" />
                   ) : (
-                    // ) : user?.role === "traveler" ? (
-                    //   <Navigate to="/traveler/trips" />
                     <Navigate to="/user/dashboard" />
                   )}
                 </ProtectedRoute>
