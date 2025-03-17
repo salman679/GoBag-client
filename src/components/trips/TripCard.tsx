@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import { MapPin, Calendar, Weight, DollarSign, User } from "lucide-react";
 import { Trip } from "../../types";
 import { Card, CardContent, CardFooter } from "../ui/Card";
-import { Button } from "../ui/Button";
+import { Button } from "../Button";
 
 interface TripCardProps {
   trip: Trip;

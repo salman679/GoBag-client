@@ -6,7 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui/Card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/Button";
 import { Badge } from "@/components/ui/badge";
 import {
   ArrowDownRight,

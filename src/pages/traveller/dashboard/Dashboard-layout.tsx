@@ -13,7 +13,7 @@ import {
   Menu,
   X,
 } from "lucide-react";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/Button";
 // import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 // import { ModeToggle } from "./mode-toggle";
 import { useIsMobile } from "@/hooks/use-mobile";

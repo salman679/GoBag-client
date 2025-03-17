@@ -27,6 +27,7 @@ import UserDashboardLayout from "./pages/user/UserDashboardLayout";
 import UserDashboard from "./pages/user/components/UserDashboard";
 import TripsPage from "./pages/user/components/trips/Trips";
 import MyRequest from "./pages/user/components/myRequest/MyRequest";
+import NewTrip from "./pages/user/components/trips/NewTrip";
 
 // Protected Route Component
 interface ProtectedRouteProps {
@@ -228,6 +229,16 @@ function App() {
               }
             />
             <Route
+              path="/user/trips/new"
+              element={
+                <ProtectedRoute allowedRoles={["user"]}>
+                  <UserDashboardLayout>
+                    <NewTrip />
+                  </UserDashboardLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/user/packages"
               element={
                 <ProtectedRoute allowedRoles={["user"]}>
@@ -246,7 +257,7 @@ function App() {
               }
             />
             <Route
-              path="/user/trips"
+              path="/user/my-trips"
               element={
                 <ProtectedRoute allowedRoles={["user"]}>
                   <TravelerTrips />

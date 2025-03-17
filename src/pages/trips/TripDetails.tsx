@@ -13,7 +13,7 @@ import {
 import { useTripStore } from "../../store/tripStore";
 import { useAuthStore } from "../../store/authStore";
 import { Trip } from "../../types";
-import { Button } from "../../components/ui/Button";
+import { Button } from "../../components/Button";
 import { Input } from "../../components/ui/Input";
 import {
   Card,

@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { Luggage } from "lucide-react";
 import { useAuthStore } from "../../store/authStore";
 import { Input } from "../../components/ui/Input";
-import { Button } from "../../components/ui/Button";
+import { Button } from "../../components/Button";
 
 interface LoginFormData {
   email: string;

@@ -4,7 +4,7 @@ import { Search, Filter, MapPin, Calendar } from "lucide-react";
 import { useTripStore } from "../../store/tripStore";
 import TripCard from "../../components/trips/TripCard";
 import { Input } from "../../components/ui/Input";
-import { Button } from "../../components/ui/Button";
+import { Button } from "../../components/Button";
 
 const TripsList: React.FC = () => {
   const location = useLocation();

@@ -6,9 +6,10 @@ import {
   CardTitle,
 } from "@/components/ui/Card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/Button";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Plus } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function TripsPage() {
   return (
@@ -20,10 +21,12 @@ export default function TripsPage() {
             Manage your upcoming and past trips
           </p>
         </div>
-        <Button className="w-full md:w-auto">
-          <Plus className="mr-2 h-4 w-4" />
-          Add New Trip
-        </Button>
+        <Link to={"/user/trips/new"}>
+          <Button className="w-full md:w-auto">
+            <Plus className="mr-2 h-4 w-4" />
+            Add New Trip
+          </Button>
+        </Link>
       </div>
 
       <Tabs defaultValue="upcoming" className="space-y-4">

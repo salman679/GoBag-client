@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { useAuthStore } from "../../store/authStore";
 import { useTripStore } from "../../store/tripStore";
-import { Button } from "../../components/ui/Button";
+import { Button } from "../../components/Button";
 import { Card, CardHeader, CardContent } from "../../components/ui/Card";
 
 const AdminDashboard: React.FC = () => {

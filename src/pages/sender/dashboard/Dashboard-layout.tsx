@@ -3,7 +3,7 @@ import type React from "react";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Package, PlusCircle, List, User, Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/Button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { useIsMobile } from "@/hooks/use-mobile";

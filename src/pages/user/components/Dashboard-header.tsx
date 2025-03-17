@@ -1,7 +1,8 @@
 import type React from "react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/Button";
 import { Plus } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/Button";
 
 interface DashboardHeaderProps {
   heading: string;
@@ -24,10 +25,12 @@ export function DashboardHeader({
         {text && <p className="text-muted-foreground mb-2">{text}</p>}
       </div>
       <div className="flex items-center gap-2">
-        <Button>
-          <Plus className="mr-2 h-4 w-4" />
-          New Trip
-        </Button>
+        <Link to={"/user/trips/new"}>
+          <Button>
+            <Plus className="mr-2 h-4 w-4" />
+            New Trip
+          </Button>
+        </Link>
         <Button variant="outline">
           <Plus className="mr-2 h-4 w-4" />
           New Package
