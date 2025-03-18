@@ -79,7 +79,7 @@ function App() {
     { name: "Home", href: "/user/dashboard", icon: HomeIcon },
     { name: "Trips", href: "/user/trips", icon: Plane },
     { name: "Packages", href: "/user/packages", icon: Luggage },
-    { name: "Account", href: "/settings", icon: User },
+    { name: "Account", href: "/user/dashboard", icon: User },
   ];
 
   return (
