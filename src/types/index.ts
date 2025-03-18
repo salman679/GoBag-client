@@ -15,9 +15,9 @@ export interface User {
 
 export interface Trip {
   id: string;
-  travelerId: string;
-  travelerName: string;
-  travelerProfilePic?: string;
+  userEmail: string;
+  userName: string;
+  userProfilePic?: string;
   departureLocation: string;
   destination: string;
   departureDate: Date;
@@ -25,8 +25,8 @@ export interface Trip {
   availableSpace: number; // in kg
   pricePerKg: number;
   currency: string;
-  status: "active" | "completed" | "cancelled";
-  description?: string;
+  status: "active" | "completed" | "cancelled" | "draft";
+  notes?: string;
   createdAt: Date;
 }
 

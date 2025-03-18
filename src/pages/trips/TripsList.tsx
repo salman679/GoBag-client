@@ -42,7 +42,7 @@ const TripsList: React.FC = () => {
         (trip) =>
           trip.departureLocation.toLowerCase().includes(query) ||
           trip.destination.toLowerCase().includes(query) ||
-          trip.description?.toLowerCase().includes(query)
+          trip.notes?.toLowerCase().includes(query)
       );
     }
 

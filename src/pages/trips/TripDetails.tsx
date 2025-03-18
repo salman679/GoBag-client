@@ -148,10 +148,10 @@ const TripDetails: React.FC = () => {
             <CardContent>
               <div className="flex items-start mb-6">
                 <div className="flex-shrink-0">
-                  {trip.travellerProfilePic ? (
+                  {trip.userProfilePic ? (
                     <img
-                      src={trip.travellerProfilePic}
-                      alt={trip.travellerName}
+                      src={trip.userProfilePic}
+                      alt={trip.userName}
                       className="object-cover w-12 h-12 rounded-full"
                     />
                   ) : (
@@ -162,7 +162,7 @@ const TripDetails: React.FC = () => {
                 </div>
                 <div className="ml-4">
                   <h2 className="text-lg font-medium text-gray-900">
-                    {trip.travellerName}
+                    {trip.userName}
                   </h2>
                   <p className="text-sm text-gray-500">Traveller</p>
                 </div>
@@ -234,12 +234,12 @@ const TripDetails: React.FC = () => {
                 </div>
               </div>
 
-              {trip.description && (
+              {trip.notes && (
                 <div className="pt-6 border-t border-gray-200">
                   <h3 className="mb-2 text-lg font-medium text-gray-900">
                     Description
                   </h3>
-                  <p className="text-gray-600">{trip.description}</p>
+                  <p className="text-gray-600">{trip.notes}</p>
                 </div>
               )}
 

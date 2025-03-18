@@ -12,14 +12,14 @@ interface TripCardProps {
 
 const TripCard: React.FC<TripCardProps> = ({ trip }) => {
   return (
-    <Card className="h-full flex flex-col">
+    <Card className="h-full flex flex-col pt-5">
       <CardContent className="flex-grow">
         <div className="flex items-start justify-between">
           <div className="flex items-center">
-            {trip.travellerProfilePic ? (
+            {trip.userProfilePic ? (
               <img
-                src={trip.travellerProfilePic}
-                alt={trip.travellerName}
+                src={trip.userProfilePic}
+                alt={trip.userName}
                 className="h-10 w-10 rounded-full object-cover"
               />
             ) : (
@@ -29,7 +29,7 @@ const TripCard: React.FC<TripCardProps> = ({ trip }) => {
             )}
             <div className="ml-3">
               <p className="text-sm font-medium text-gray-900">
-                {trip.travellerName}
+                {trip.userName}
               </p>
               <p className="text-xs text-gray-500">Traveller</p>
             </div>
@@ -92,7 +92,7 @@ const TripCard: React.FC<TripCardProps> = ({ trip }) => {
         </div>
       </CardContent>
 
-      <CardFooter className="border-t border-gray-200 bg-gray-50">
+      <CardFooter className="border-gray-200 bg-gray-50">
         <Link to={`/trips/${trip.id}`} className="w-full">
           <Button fullWidth>View Details</Button>
         </Link>

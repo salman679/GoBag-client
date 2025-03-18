@@ -1,10 +1,5 @@
-import React from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Routes, Route, Navigate, Link, useLocation } from "react-router-dom";
 import { useAuthStore } from "./store/authStore";
 
 // Layout Components
@@ -25,9 +20,11 @@ import SenderBookings from "./pages/sender/SenderBookings";
 import TravelerTrips from "./pages/traveller/TravelerTrips";
 import UserDashboardLayout from "./pages/user/UserDashboardLayout";
 import UserDashboard from "./pages/user/components/UserDashboard";
-import TripsPage from "./pages/user/components/trips/Trips";
+// import TripsPage from "./pages/user/components/trips/Trips";
 import MyRequest from "./pages/user/components/myRequest/MyRequest";
 import NewTrip from "./pages/user/components/trips/NewTrip";
+import { Luggage, Plane, User, Home as HomeIcon } from "lucide-react";
+import { cn } from "./lib/utils";
 
 // Protected Route Component
 interface ProtectedRouteProps {
@@ -62,25 +59,46 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
 function App() {
   const { user } = useAuthStore();
+  const [isMobile, setIsMobile] = useState(false);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
+
+    return () => {
+      window.removeEventListener("resize", checkScreenSize);
+    };
+  }, []);
+
+  const mobileNavItems = [
+    { name: "Home", href: "/user/dashboard", icon: HomeIcon },
+    { name: "Trips", href: "/user/trips", icon: Plane },
+    { name: "Packages", href: "/user/packages", icon: Luggage },
+    { name: "Account", href: "/settings", icon: User },
+  ];
 
   return (
-    <Router>
-      <div className="flex flex-col min-h-screen">
-        <Navbar />
-        <main className="flex-grow">
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/trips" element={<TripsList />} />
-            <Route path="/trips/:id" element={<TripDetails />} />
-            <Route path="/terms-of-service" element={<TermsOfService />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+    <div className="flex flex-col min-h-screen">
+      <Navbar />
+      <main className="flex-grow">
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/trips" element={<TripsList />} />
+          <Route path="/trips/:id" element={<TripDetails />} />
+          <Route path="/terms-of-service" element={<TermsOfService />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
-            {/* Traveler Routes */}
-            {/* <Route
+          {/* Traveler Routes */}
+          {/* <Route
               path="/traveler/trips/create"
               element={
                 <ProtectedRoute allowedRoles={["traveler"]}>
@@ -157,8 +175,8 @@ function App() {
               }
             /> */}
 
-            {/* Sender Routes */}
-            {/* <Route
+          {/* Sender Routes */}
+          {/* <Route
               path="/sender/bookings"
               element={
                 <ProtectedRoute allowedRoles={["sender"]}>
@@ -207,95 +225,117 @@ function App() {
               }
             /> */}
 
-            {/* user Routes */}
-            <Route
-              path="/user/dashboard"
-              element={
-                <ProtectedRoute allowedRoles={["user"]}>
-                  <UserDashboardLayout>
-                    <UserDashboard />
-                  </UserDashboardLayout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/user/trips"
-              element={
-                <ProtectedRoute allowedRoles={["user"]}>
-                  <UserDashboardLayout>
-                    <TripsPage />
-                  </UserDashboardLayout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/user/trips/new"
-              element={
-                <ProtectedRoute allowedRoles={["user"]}>
-                  <UserDashboardLayout>
-                    <NewTrip />
-                  </UserDashboardLayout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/user/packages"
-              element={
-                <ProtectedRoute allowedRoles={["user"]}>
-                  <UserDashboardLayout>
-                    <MyRequest />
-                  </UserDashboardLayout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/user/bookings"
-              element={
-                <ProtectedRoute allowedRoles={["user"]}>
-                  <SenderBookings />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/user/my-trips"
-              element={
-                <ProtectedRoute allowedRoles={["user"]}>
+          {/* user Routes */}
+          <Route
+            path="/user/dashboard"
+            element={
+              <ProtectedRoute allowedRoles={["user"]}>
+                <UserDashboardLayout>
+                  <UserDashboard />
+                </UserDashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/user/trips"
+            element={
+              <ProtectedRoute allowedRoles={["user"]}>
+                <UserDashboardLayout>
                   <TravelerTrips />
-                </ProtectedRoute>
-              }
-            />
+                </UserDashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/user/trips/new"
+            element={
+              <ProtectedRoute allowedRoles={["user"]}>
+                <UserDashboardLayout>
+                  <NewTrip />
+                </UserDashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/user/packages"
+            element={
+              <ProtectedRoute allowedRoles={["user"]}>
+                <UserDashboardLayout>
+                  <MyRequest />
+                </UserDashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/user/bookings"
+            element={
+              <ProtectedRoute allowedRoles={["user"]}>
+                <SenderBookings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/user/my-trips"
+            element={
+              <ProtectedRoute allowedRoles={["user"]}>
+                <TravelerTrips />
+              </ProtectedRoute>
+            }
+          />
 
-            {/* Admin Routes */}
-            <Route
-              path="/admin/dashboard"
-              element={
-                <ProtectedRoute allowedRoles={["admin"]}>
-                  <AdminDashboard />
-                </ProtectedRoute>
-              }
-            />
+          {/* Admin Routes */}
+          <Route
+            path="/admin/dashboard"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
 
-            {/* Redirect based on user role */}
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  {user?.role === "admin" ? (
-                    <Navigate to="/admin/dashboard" />
-                  ) : (
-                    <Navigate to="/user/dashboard" />
+          {/* Redirect based on user role */}
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                {user?.role === "admin" ? (
+                  <Navigate to="/admin/dashboard" />
+                ) : (
+                  <Navigate to="/user/dashboard" />
+                )}
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Fallback route */}
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+
+        {/* Bottom navigation bar for mobile */}
+        {isMobile && (
+          <div className="fixed bottom-0 left-0 right-0 border-t bg-background z-50">
+            <div className="flex items-center justify-around h-16">
+              {mobileNavItems.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className={cn(
+                    "flex flex-col items-center justify-center w-full h-full px-2 text-xs",
+                    pathname === item.href
+                      ? "text-primary font-medium"
+                      : "text-muted-foreground"
                   )}
-                </ProtectedRoute>
-              }
-            />
-
-            {/* Fallback route */}
-            <Route path="*" element={<Navigate to="/" />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
-    </Router>
+                >
+                  <item.icon className="h-5 w-5 mb-1" />
+                  <span>{item.name}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+      </main>
+      <Footer />
+    </div>
   );
 }
 

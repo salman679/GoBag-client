@@ -10,7 +10,6 @@ import {
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Select,
   SelectContent,
@@ -31,33 +30,33 @@ import {
   MapPin,
   Plane,
   Package,
-  DollarSign,
+  // DollarSign,
   Info,
   ArrowLeft,
 } from "lucide-react";
-import { useState } from "react";
 import { useForm, Controller, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
+import { useTripStore } from "@/store/tripStore";
 
 // Define the form schema with Zod
 const tripSchema = z.object({
-  tripType: z.enum(["one-way", "round-trip"]),
-  origin: z.string().min(2, { message: "Origin is required" }),
+  departureLocation: z
+    .string()
+    .min(2, { message: "departureLocation is required" }),
   destination: z.string().min(2, { message: "Destination is required" }),
   departureDate: z.date({ required_error: "Departure date is required" }),
-  returnDate: z.date().optional(),
-  transportType: z.string().min(1, { message: "Transport type is required" }),
-  maxWeight: z.coerce
+  arrivalDate: z.date({ required_error: "Arrival Date is required" }),
+  availableSpace: z.coerce
     .number()
-    .min(0.1, { message: "Maximum weight must be greater than 0" }),
+    .min(0.1, { message: "Maximum Available Space must be greater than 0" }),
   maxSize: z.string().min(1, { message: "Maximum size is required" }),
   pricePerKg: z.coerce
     .number()
     .min(0.1, { message: "Price per kg must be greater than 0" }),
-  deliveryTime: z.string().min(1, { message: "Delivery time is required" }),
+  currency: z.string().min(1, { message: "Currency is required" }),
   notes: z.string().optional(),
 });
 
@@ -87,21 +86,18 @@ export default function NewTripPage() {
 }
 
 function NewTripForm() {
-  const [, setTripType] = useState<"one-way" | "round-trip">("one-way");
+  const { createTrip } = useTripStore();
   const navigate = useNavigate();
 
   // Initialize react-hook-form
   const form = useForm<TripFormValues>({
     resolver: zodResolver(tripSchema),
     defaultValues: {
-      tripType: "one-way",
-      origin: "",
+      departureLocation: "",
       destination: "",
-      transportType: "",
-      maxWeight: 5,
+      availableSpace: 5,
       maxSize: "",
       pricePerKg: 10,
-      deliveryTime: "",
       notes: "",
     },
   });
@@ -118,15 +114,19 @@ function NewTripForm() {
 
   const onSubmit: SubmitHandler<TripFormValues> = async (data) => {
     try {
-      // Simulate API call with a delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Validate return date
+      // if (data.departureDate >= data.arrivalDate) {
+      //   throw new Error("Return date must be after departure date");
+      // }
+
+      await createTrip(data);
 
       console.log("Form submitted:", data);
 
       // Show success toast
       toast({
         title: "Trip created successfully",
-        description: `Your trip from ${data.origin} to ${data.destination} has been created.`,
+        description: `Your trip from ${data.departureLocation} to ${data.destination} has been created.`,
       });
 
       // Redirect to trips page
@@ -151,556 +151,296 @@ function NewTripForm() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <Controller
-            name="tripType"
-            control={control}
-            render={({ field }) => (
-              <Tabs
-                defaultValue={field.value}
-                className="w-full"
-                onValueChange={(value) => {
-                  field.onChange(value);
-                  setTripType(value as "one-way" | "round-trip");
-                }}
-              >
-                <TabsList className="grid w-full max-w-md grid-cols-2">
-                  <TabsTrigger value="one-way">One-way Trip</TabsTrigger>
-                  <TabsTrigger value="round-trip">Round Trip</TabsTrigger>
-                </TabsList>
-                <TabsContent value="one-way" className="space-y-6 mt-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label
-                        htmlFor="origin"
-                        className={errors.origin ? "text-destructive" : ""}
-                      >
-                        Origin
-                      </Label>
-                      <div className="relative">
-                        <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                        <Controller
-                          name="origin"
-                          control={control}
-                          render={({ field }) => (
-                            <Input
-                              id="origin"
-                              placeholder="City, Country"
-                              className={cn(
-                                "pl-10",
-                                errors.origin && "border-destructive"
-                              )}
-                              {...field}
-                            />
-                          )}
-                        />
-                      </div>
-                      {errors.origin && (
-                        <p className="text-xs text-destructive mt-1">
-                          {errors.origin.message}
-                        </p>
-                      )}
-                    </div>
-                    <div className="space-y-2">
-                      <Label
-                        htmlFor="destination"
-                        className={errors.destination ? "text-destructive" : ""}
-                      >
-                        Destination
-                      </Label>
-                      <div className="relative">
-                        <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                        <Controller
-                          name="destination"
-                          control={control}
-                          render={({ field }) => (
-                            <Input
-                              id="destination"
-                              placeholder="City, Country"
-                              className={cn(
-                                "pl-10",
-                                errors.destination && "border-destructive"
-                              )}
-                              {...field}
-                            />
-                          )}
-                        />
-                      </div>
-                      {errors.destination && (
-                        <p className="text-xs text-destructive mt-1">
-                          {errors.destination.message}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label
-                        htmlFor="departure-date"
-                        className={
-                          errors.departureDate ? "text-destructive" : ""
-                        }
-                      >
-                        Departure Date
-                      </Label>
-                      <Controller
-                        name="departureDate"
-                        control={control}
-                        render={({ field }) => (
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <Button
-                                variant="outline"
-                                className={cn(
-                                  "w-full justify-start text-left font-normal",
-                                  !field.value && "text-muted-foreground",
-                                  errors.departureDate && "border-destructive"
-                                )}
-                              >
-                                <CalendarIcon className="mr-2 h-4 w-4" />
-                                {field.value
-                                  ? format(field.value, "PPP")
-                                  : "Select date"}
-                              </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0">
-                              <Calendar
-                                mode="single"
-                                selected={field.value}
-                                onSelect={field.onChange}
-                                initialFocus
-                                disabled={(date) => date < new Date()}
-                              />
-                            </PopoverContent>
-                          </Popover>
-                        )}
-                      />
-                      {errors.departureDate && (
-                        <p className="text-xs text-destructive mt-1">
-                          {errors.departureDate.message}
-                        </p>
-                      )}
-                    </div>
-                    <div className="space-y-2">
-                      <Label
-                        htmlFor="transport-type"
-                        className={
-                          errors.transportType ? "text-destructive" : ""
-                        }
-                      >
-                        Transport Type
-                      </Label>
-                      <Controller
-                        name="transportType"
-                        control={control}
-                        render={({ field }) => (
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                          >
-                            <SelectTrigger
-                              className={
-                                errors.transportType ? "border-destructive" : ""
-                              }
-                            >
-                              <SelectValue placeholder="Select transport type" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="flight">Flight</SelectItem>
-                              <SelectItem value="train">Train</SelectItem>
-                              <SelectItem value="bus">Bus</SelectItem>
-                              <SelectItem value="car">Car</SelectItem>
-                              <SelectItem value="other">Other</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        )}
-                      />
-                      {errors.transportType && (
-                        <p className="text-xs text-destructive mt-1">
-                          {errors.transportType.message}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                </TabsContent>
-
-                <TabsContent value="round-trip" className="space-y-6 mt-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label
-                        htmlFor="origin-round"
-                        className={errors.origin ? "text-destructive" : ""}
-                      >
-                        Origin
-                      </Label>
-                      <div className="relative">
-                        <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                        <Controller
-                          name="origin"
-                          control={control}
-                          render={({ field }) => (
-                            <Input
-                              id="origin-round"
-                              placeholder="City, Country"
-                              className={cn(
-                                "pl-10",
-                                errors.origin && "border-destructive"
-                              )}
-                              {...field}
-                            />
-                          )}
-                        />
-                      </div>
-                      {errors.origin && (
-                        <p className="text-xs text-destructive mt-1">
-                          {errors.origin.message}
-                        </p>
-                      )}
-                    </div>
-                    <div className="space-y-2">
-                      <Label
-                        htmlFor="destination-round"
-                        className={errors.destination ? "text-destructive" : ""}
-                      >
-                        Destination
-                      </Label>
-                      <div className="relative">
-                        <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                        <Controller
-                          name="destination"
-                          control={control}
-                          render={({ field }) => (
-                            <Input
-                              id="destination-round"
-                              placeholder="City, Country"
-                              className={cn(
-                                "pl-10",
-                                errors.destination && "border-destructive"
-                              )}
-                              {...field}
-                            />
-                          )}
-                        />
-                      </div>
-                      {errors.destination && (
-                        <p className="text-xs text-destructive mt-1">
-                          {errors.destination.message}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label
-                        htmlFor="departure-date-round"
-                        className={
-                          errors.departureDate ? "text-destructive" : ""
-                        }
-                      >
-                        Departure Date
-                      </Label>
-                      <Controller
-                        name="departureDate"
-                        control={control}
-                        render={({ field }) => (
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <Button
-                                variant="outline"
-                                className={cn(
-                                  "w-full justify-start text-left font-normal",
-                                  !field.value && "text-muted-foreground",
-                                  errors.departureDate && "border-destructive"
-                                )}
-                              >
-                                <CalendarIcon className="mr-2 h-4 w-4" />
-                                {field.value
-                                  ? format(field.value, "PPP")
-                                  : "Select date"}
-                              </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0">
-                              <Calendar
-                                mode="single"
-                                selected={field.value}
-                                onSelect={field.onChange}
-                                initialFocus
-                                disabled={(date) => date < new Date()}
-                              />
-                            </PopoverContent>
-                          </Popover>
-                        )}
-                      />
-                      {errors.departureDate && (
-                        <p className="text-xs text-destructive mt-1">
-                          {errors.departureDate.message}
-                        </p>
-                      )}
-                    </div>
-                    <div className="space-y-2">
-                      <Label
-                        htmlFor="return-date"
-                        className={errors.returnDate ? "text-destructive" : ""}
-                      >
-                        Return Date
-                      </Label>
-                      <Controller
-                        name="returnDate"
-                        control={control}
-                        render={({ field }) => (
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <Button
-                                variant="outline"
-                                className={cn(
-                                  "w-full justify-start text-left font-normal",
-                                  !field.value && "text-muted-foreground",
-                                  errors.returnDate && "border-destructive"
-                                )}
-                              >
-                                <CalendarIcon className="mr-2 h-4 w-4" />
-                                {field.value
-                                  ? format(field.value, "PPP")
-                                  : "Select date"}
-                              </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0">
-                              <Calendar
-                                mode="single"
-                                selected={field.value}
-                                onSelect={field.onChange}
-                                initialFocus
-                                disabled={(date) => {
-                                  const today = new Date();
-                                  today.setHours(0, 0, 0, 0);
-
-                                  return (
-                                    date < today ||
-                                    (departureDate && date < departureDate)
-                                  );
-                                }}
-                              />
-                            </PopoverContent>
-                          </Popover>
-                        )}
-                      />
-                      {errors.returnDate && (
-                        <p className="text-xs text-destructive mt-1">
-                          {errors.returnDate.message}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label
-                        htmlFor="transport-type-round"
-                        className={
-                          errors.transportType ? "text-destructive" : ""
-                        }
-                      >
-                        Transport Type
-                      </Label>
-                      <Controller
-                        name="transportType"
-                        control={control}
-                        render={({ field }) => (
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                          >
-                            <SelectTrigger
-                              className={
-                                errors.transportType ? "border-destructive" : ""
-                              }
-                            >
-                              <SelectValue placeholder="Select transport type" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="flight">Flight</SelectItem>
-                              <SelectItem value="train">Train</SelectItem>
-                              <SelectItem value="bus">Bus</SelectItem>
-                              <SelectItem value="car">Car</SelectItem>
-                              <SelectItem value="other">Other</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        )}
-                      />
-                      {errors.transportType && (
-                        <p className="text-xs text-destructive mt-1">
-                          {errors.transportType.message}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                </TabsContent>
-              </Tabs>
-            )}
-          />
-
-          <div className="border-t pt-6">
-            <h3 className="text-lg font-medium mb-4">
-              Package Delivery Details
-            </h3>
+          <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <Label
-                  htmlFor="max-weight"
-                  className={errors.maxWeight ? "text-destructive" : ""}
+                  htmlFor="departureLocation"
+                  className={errors.departureLocation ? "text-destructive" : ""}
                 >
-                  Maximum Weight (kg)
+                  Departure Location
                 </Label>
                 <div className="relative">
-                  <Package className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Controller
-                    name="maxWeight"
+                    name="departureLocation"
                     control={control}
                     render={({ field }) => (
                       <Input
-                        id="max-weight"
-                        type="number"
-                        min="0"
-                        step="0.1"
-                        placeholder="5"
+                        id="departureLocation"
+                        placeholder="City, Country"
                         className={cn(
                           "pl-10",
-                          errors.maxWeight && "border-destructive"
+                          errors.departureLocation && "border-destructive"
                         )}
                         {...field}
                       />
                     )}
                   />
                 </div>
-                {errors.maxWeight && (
+                {errors.departureLocation && (
                   <p className="text-xs text-destructive mt-1">
-                    {errors.maxWeight.message}
+                    {errors.departureLocation.message}
                   </p>
                 )}
               </div>
               <div className="space-y-2">
                 <Label
-                  htmlFor="max-size"
-                  className={errors.maxSize ? "text-destructive" : ""}
+                  htmlFor="destination"
+                  className={errors.destination ? "text-destructive" : ""}
                 >
-                  Maximum Size
+                  Destination
                 </Label>
-                <Controller
-                  name="maxSize"
-                  control={control}
-                  render={({ field }) => (
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <SelectTrigger
-                        className={errors.maxSize ? "border-destructive" : ""}
-                      >
-                        <SelectValue placeholder="Select maximum size" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="small">
-                          Small (fits in a backpack)
-                        </SelectItem>
-                        <SelectItem value="medium">
-                          Medium (fits in a carry-on)
-                        </SelectItem>
-                        <SelectItem value="large">
-                          Large (fits in a suitcase)
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  )}
-                />
-                {errors.maxSize && (
+                <div className="relative">
+                  <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Controller
+                    name="destination"
+                    control={control}
+                    render={({ field }) => (
+                      <Input
+                        id="destination"
+                        placeholder="City, Country"
+                        className={cn(
+                          "pl-10",
+                          errors.destination && "border-destructive"
+                        )}
+                        {...field}
+                      />
+                    )}
+                  />
+                </div>
+                {errors.destination && (
                   <p className="text-xs text-destructive mt-1">
-                    {errors.maxSize.message}
+                    {errors.destination.message}
                   </p>
                 )}
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <Label
-                  htmlFor="price-per-kg"
-                  className={errors.pricePerKg ? "text-destructive" : ""}
+                  htmlFor="departure-date"
+                  className={errors.departureDate ? "text-destructive" : ""}
                 >
-                  Price per kg ($)
+                  Departure Date
                 </Label>
-                <div className="relative">
-                  <DollarSign className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Controller
-                    name="pricePerKg"
-                    control={control}
-                    render={({ field }) => (
-                      <Input
-                        id="price-per-kg"
-                        type="number"
-                        min="0"
-                        step="0.01"
-                        placeholder="10.00"
-                        className={cn(
-                          "pl-10",
-                          errors.pricePerKg && "border-destructive"
-                        )}
-                        {...field}
-                      />
-                    )}
-                  />
-                </div>
-                {errors.pricePerKg && (
+                <Controller
+                  name="departureDate"
+                  control={control}
+                  render={({ field }) => (
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className={cn(
+                            "w-full justify-start text-left font-normal",
+                            !field.value && "text-muted-foreground",
+                            errors.departureDate && "border-destructive"
+                          )}
+                        >
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {field.value
+                            ? format(field.value, "PPP")
+                            : "Select date"}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          initialFocus
+                          disabled={(date) => date < new Date()}
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  )}
+                />
+                {errors.departureDate && (
                   <p className="text-xs text-destructive mt-1">
-                    {errors.pricePerKg.message}
+                    {errors.departureDate.message}
                   </p>
                 )}
               </div>
               <div className="space-y-2">
                 <Label
-                  htmlFor="delivery-time"
-                  className={errors.deliveryTime ? "text-destructive" : ""}
+                  htmlFor="arrival-date"
+                  className={errors.arrivalDate ? "text-destructive" : ""}
                 >
-                  Estimated Delivery Time
+                  Arrival Date
                 </Label>
                 <Controller
-                  name="deliveryTime"
+                  name="arrivalDate"
                   control={control}
+                  render={({ field }) => (
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className={cn(
+                            "w-full justify-start text-left font-normal",
+                            !field.value && "text-muted-foreground",
+                            errors.arrivalDate && "border-destructive"
+                          )}
+                          disabled={!departureDate} // Disable if no departure date is selected
+                        >
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {field.value
+                            ? format(field.value, "PPP")
+                            : "Select date"}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          initialFocus
+                          disabled={(date) =>
+                            !departureDate || date < departureDate
+                          } // Ensure arrival is after departure
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  )}
+                />
+                {errors.arrivalDate && (
+                  <p className="text-xs text-destructive mt-1">
+                    {errors.arrivalDate.message}
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <Label
+                htmlFor="max-weight"
+                className={errors.availableSpace ? "text-destructive" : ""}
+              >
+                Maximum Available Space (in kg)
+              </Label>
+              <div className="relative">
+                <Package className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Controller
+                  name="availableSpace"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      id="max-weight"
+                      type="number"
+                      min="0"
+                      step="0.1"
+                      placeholder="5"
+                      className={cn(
+                        "pl-10",
+                        errors.availableSpace && "border-destructive"
+                      )}
+                      {...field}
+                    />
+                  )}
+                />
+              </div>
+              {errors.availableSpace && (
+                <p className="text-xs text-destructive mt-1">
+                  {errors.availableSpace.message}
+                </p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label
+                htmlFor="max-size"
+                className={errors.maxSize ? "text-destructive" : ""}
+              >
+                Maximum Size
+              </Label>
+              <Controller
+                name="maxSize"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger
+                      className={errors.maxSize ? "border-destructive" : ""}
+                    >
+                      <SelectValue placeholder="Select maximum size" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="small">
+                        Small (fits in a backpack)
+                      </SelectItem>
+                      <SelectItem value="medium">
+                        Medium (fits in a carry-on)
+                      </SelectItem>
+                      <SelectItem value="large">
+                        Large (fits in a suitcase)
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+              {errors.maxSize && (
+                <p className="text-xs text-destructive mt-1">
+                  {errors.maxSize.message}
+                </p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label
+                htmlFor="price-per-kg"
+                className={errors.pricePerKg ? "text-destructive" : ""}
+              >
+                Price per KG
+              </Label>
+              <div className="flex items-center gap-2">
+                <Controller
+                  name="pricePerKg"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      id="price-per-kg"
+                      type="number"
+                      placeholder="Enter price"
+                      min={1} // Prevent negative values
+                      step="0.01" // Allow decimals
+                      {...field}
+                      className={cn(errors.pricePerKg && "border-destructive")}
+                    />
+                  )}
+                />
+                <Controller
+                  name="currency"
+                  control={control}
+                  defaultValue="BDT"
                   render={({ field }) => (
                     <Select
                       onValueChange={field.onChange}
+                      value={field.value}
                       defaultValue={field.value}
                     >
                       <SelectTrigger
-                        className={
-                          errors.deliveryTime ? "border-destructive" : ""
-                        }
+                        className={cn(errors.currency && "border-destructive")}
                       >
-                        <SelectValue placeholder="Select delivery time" />
+                        <SelectValue placeholder="Select currency" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="same-day">
-                          Same day as arrival
-                        </SelectItem>
-                        <SelectItem value="next-day">
-                          Next day after arrival
-                        </SelectItem>
-                        <SelectItem value="2-3-days">
-                          2-3 days after arrival
-                        </SelectItem>
-                        <SelectItem value="flexible">
-                          Flexible (to be discussed)
-                        </SelectItem>
+                        <SelectItem value="USD">USD</SelectItem>
+                        <SelectItem value="BDT">BDT</SelectItem>
+                        <SelectItem value="EUR">EUR</SelectItem>
                       </SelectContent>
                     </Select>
                   )}
                 />
-                {errors.deliveryTime && (
-                  <p className="text-xs text-destructive mt-1">
-                    {errors.deliveryTime.message}
-                  </p>
-                )}
               </div>
+              {errors.pricePerKg && (
+                <p className="text-xs text-destructive mt-1">
+                  {errors.pricePerKg.message}
+                </p>
+              )}
             </div>
           </div>
 

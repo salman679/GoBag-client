@@ -55,7 +55,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       await signInWithEmailAndPassword(auth, email, password);
 
       const {
-        displayName,
+        name: displayName,
         email: userEmail,
         photoURL,
         role,

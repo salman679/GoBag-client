@@ -15,7 +15,6 @@ import {
   // Menu,
   ChevronLeft,
   ChevronRight,
-  User,
 } from "lucide-react";
 import { Button } from "@/components/Button";
 // import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -54,13 +53,6 @@ export function DashboardShell({ children, className }: DashboardShellProps) {
     { name: "Payments", href: "/payments", icon: CreditCard },
     { name: "Settings", href: "/settings", icon: Settings },
     { name: "Help", href: "/help", icon: HelpCircle },
-  ];
-
-  const mobileNavItems = [
-    { name: "Home", href: "/user/dashboard", icon: Home },
-    { name: "Trips", href: "/user/trips", icon: Plane },
-    { name: "Packages", href: "/user/packages", icon: Luggage },
-    { name: "Account", href: "/settings", icon: User },
   ];
 
   const toggleSidebar = () => {
@@ -182,29 +174,6 @@ export function DashboardShell({ children, className }: DashboardShellProps) {
         >
           {children}
         </main>
-
-        {/* Bottom navigation bar for mobile */}
-        {isMobile && (
-          <div className="fixed bottom-0 left-0 right-0 border-t bg-background z-50">
-            <div className="flex items-center justify-around h-16">
-              {mobileNavItems.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className={cn(
-                    "flex flex-col items-center justify-center w-full h-full px-2 text-xs",
-                    pathname === item.href
-                      ? "text-primary font-medium"
-                      : "text-muted-foreground"
-                  )}
-                >
-                  <item.icon className="h-5 w-5 mb-1" />
-                  <span>{item.name}</span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

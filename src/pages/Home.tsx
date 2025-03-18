@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Search, Luggage, Plane, CreditCard, Star, Shield } from "lucide-react";
+import { Search, Plane, CreditCard, Star, Shield } from "lucide-react";
 import { Button } from "../components/Button";
 import { Input } from "../components/ui/Input";
 
