@@ -28,6 +28,7 @@ import { cn } from "./lib/utils";
 import AboutPage from "./pages/about/About";
 import NewRequest from "./pages/user/components/myRequest/newRequest/NewRequest";
 import ProhibitedItemsPage from "./pages/terms/ProhibitedItems";
+import BrowsePackages from "./pages/packages/Packages";
 
 // Protected Route Component
 interface ProtectedRouteProps {
@@ -97,6 +98,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/trips" element={<TripsList />} />
           <Route path="/trips/:id" element={<TripDetails />} />
+          <Route path="/packages" element={<BrowsePackages />} />
           <Route path="/about-us" element={<AboutPage />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
