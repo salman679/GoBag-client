@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import {
   Plus,
-  // MapPin,
   Calendar,
   Weight,
   DollarSign,
@@ -11,39 +10,31 @@ import {
   Package,
 } from "lucide-react";
 import { useTripStore } from "../../store/tripStore";
-import { useAuthStore } from "../../store/authStore";
 import { Trip } from "../../types";
 import { Button } from "../../components/Button";
 import { Card, CardHeader, CardContent } from "../../components/ui/Card";
+import { useAuthStore } from "@/store/authStore";
 
 const TravelerTrips: React.FC = () => {
   const { trips, bookings, fetchTripsByUser, updateTripStatus, isLoading } =
     useTripStore();
   const { user } = useAuthStore();
-  const [myTrips, setMyTrips] = useState<Trip[]>([]);
   const [activeTab, setActiveTab] = useState<
     "active" | "completed" | "cancelled"
   >("active");
 
   useEffect(() => {
+    setActiveTab("active");
     if (user?.email) {
-      const trips = fetchTripsByUser(user.email);
-      console.log(trips);
+      fetchTripsByUser(user?.email);
     }
-  }, [user?.email, fetchTripsByUser]);
-
-  useEffect(() => {
-    if (trips.length > 0 && user) {
-      const filteredTrips = trips.filter(
-        (trip) => trip.userEmail === user.email
-      );
-      setMyTrips(filteredTrips);
-    }
-  }, [trips, user]);
+  }, [fetchTripsByUser, user?.email]);
 
   const getFilteredTrips = () => {
-    return myTrips.filter((trip) => trip.status === activeTab);
+    return trips.filter((trip) => trip.status === activeTab);
   };
+
+  console.log(getFilteredTrips());
 
   const getTripBookings = (tripId: string) => {
     return bookings.filter((booking) => booking.tripId === tripId);
@@ -54,7 +45,7 @@ const TravelerTrips: React.FC = () => {
     await updateTripStatus(tripId, status);
   };
 
-  if (isLoading && myTrips.length === 0) {
+  if (isLoading && trips.length === 0) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex justify-center items-center py-12">
@@ -145,7 +136,7 @@ const TravelerTrips: React.FC = () => {
       ) : (
         <div className="space-y-8">
           {getFilteredTrips().map((trip) => {
-            const tripBookings = getTripBookings(trip.id);
+            const tripBookings = getTripBookings(trip._id);
             const totalBooked = tripBookings.reduce(
               (sum, booking) => sum + booking.luggageSize,
               0
@@ -156,7 +147,7 @@ const TravelerTrips: React.FC = () => {
             );
 
             return (
-              <Card key={trip.id}>
+              <Card key={trip._id}>
                 <CardHeader>
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between">
                     <h2 className="text-xl font-bold text-gray-900">

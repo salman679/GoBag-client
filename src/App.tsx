@@ -25,6 +25,9 @@ import MyRequest from "./pages/user/components/myRequest/MyRequest";
 import NewTrip from "./pages/user/components/trips/NewTrip";
 import { Luggage, Plane, User, Home as HomeIcon } from "lucide-react";
 import { cn } from "./lib/utils";
+import AboutPage from "./pages/about/About";
+import NewRequest from "./pages/user/components/myRequest/newRequest/NewRequest";
+import ProhibitedItemsPage from "./pages/terms/ProhibitedItems";
 
 // Protected Route Component
 interface ProtectedRouteProps {
@@ -76,10 +79,10 @@ function App() {
   }, []);
 
   const mobileNavItems = [
-    { name: "Home", href: "/user/dashboard", icon: HomeIcon },
-    { name: "Trips", href: "/user/trips", icon: Plane },
-    { name: "Packages", href: "/user/packages", icon: Luggage },
-    { name: "Account", href: "/user/dashboard", icon: User },
+    { name: "Home", href: "/", icon: HomeIcon },
+    { name: "Trips", href: "/trips", icon: Plane },
+    { name: "Packages", href: "/requests", icon: Luggage },
+    { name: "Dashboard", href: "/user/dashboard", icon: User },
   ];
 
   return (
@@ -94,8 +97,10 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/trips" element={<TripsList />} />
           <Route path="/trips/:id" element={<TripDetails />} />
+          <Route path="/about-us" element={<AboutPage />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/prohibited-items" element={<ProhibitedItemsPage />} />
 
           {/* Traveler Routes */}
           {/* <Route
@@ -257,11 +262,21 @@ function App() {
             }
           />
           <Route
-            path="/user/packages"
+            path="/user/requests"
             element={
               <ProtectedRoute allowedRoles={["user"]}>
                 <UserDashboardLayout>
                   <MyRequest />
+                </UserDashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/user/requests/new"
+            element={
+              <ProtectedRoute allowedRoles={["user"]}>
+                <UserDashboardLayout>
+                  <NewRequest />
                 </UserDashboardLayout>
               </ProtectedRoute>
             }

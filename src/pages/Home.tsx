@@ -1,430 +1,587 @@
-import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import {
+  Plane,
+  Package,
+  Globe,
+  Users,
+  Shield,
+  Award,
+  ArrowRight,
+  Clock,
+  DollarSign,
+  // Menu,
+  // X,
+} from "lucide-react";
+import GoBagImage from "../assets/gobag-preview-image.webp";
+// import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Search, Plane, CreditCard, Star, Shield } from "lucide-react";
-import { Button } from "../components/Button";
-import { Input } from "../components/ui/Input";
 
-const Home: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState("");
+export default function HomePage() {
+  // const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Hero Section */}
-      <section className="text-white bg-gradient-to-r from-blue-600 to-blue-800">
-        <div className="px-4 py-20 mx-auto max-w-7xl sm:px-6 lg:px-8 md:py-28">
-          <div className="grid items-center grid-cols-1 gap-12 md:grid-cols-2">
-            <div>
-              <h1 className="text-4xl font-bold leading-tight md:text-5xl">
-                Send Your Luggage Worldwide with Trusted Travelers
-              </h1>
-              <p className="mt-6 text-lg text-blue-100">
-                Connect with travelers who have extra luggage space and send
-                your items for a fraction of traditional shipping costs.
-              </p>
-              <div className="flex flex-col gap-4 mt-8 sm:flex-row">
-                <Link to="/trips">
-                  <Button size="lg" className="w-full sm:w-auto">
-                    Find Travelers
+    <div className="flex min-h-screen flex-col">
+      {/* Header/Navigation */}
+      {/* <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container flex h-16 items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Link to="/" className="flex items-center gap-2">
+              <Package className="h-6 w-6 text-primary" />
+              <span className="text-xl font-bold">GoBag</span>
+            </Link>
+          </div> */}
+
+      {/* Desktop Navigation */}
+      {/* <nav className="hidden md:flex items-center gap-6">
+            <Link
+              to="/how-it-works"
+              className="text-sm font-medium hover:text-primary"
+            >
+              How It Works
+            </Link>
+            <Link
+              to="/pricing"
+              className="text-sm font-medium hover:text-primary"
+            >
+              Pricing
+            </Link>
+            <Link
+              to="/about"
+              className="text-sm font-medium hover:text-primary"
+            >
+              About Us
+            </Link>
+            <Link
+              to="/contact"
+              className="text-sm font-medium hover:text-primary"
+            >
+              Contact
+            </Link>
+          </nav> */}
+
+      {/* <div className="flex items-center gap-4"> */}
+      {/* <div className="hidden md:flex gap-2">
+              <Link to="/login">
+                <Button variant="outline">Log In</Button>
+              </Link>
+              <Link to="/register">
+                <Button>Sign Up</Button>
+              </Link>
+            </div> */}
+
+      {/* Mobile Menu Button */}
+      {/* <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+            </Button> */}
+      {/* </div>
+        </div> */}
+
+      {/* Mobile Menu */}
+      {/* {mobileMenuOpen && (
+          <div className="md:hidden border-t">
+            <div className="container py-4 space-y-4">
+              <nav className="flex flex-col space-y-4">
+                <Link
+                  to="/how-it-works"
+                  className="text-sm font-medium hover:text-primary"
+                >
+                  How It Works
+                </Link>
+                <Link
+                  to="/pricing"
+                  className="text-sm font-medium hover:text-primary"
+                >
+                  Pricing
+                </Link>
+                <Link
+                  to="/about"
+                  className="text-sm font-medium hover:text-primary"
+                >
+                  About Us
+                </Link>
+                <Link
+                  to="/contact"
+                  className="text-sm font-medium hover:text-primary"
+                >
+                  Contact
+                </Link>
+              </nav>
+              <div className="flex gap-2 pt-2 border-t">
+                <Link to="/login" className="flex-1">
+                  <Button variant="outline" className="w-full">
+                    Log In
                   </Button>
                 </Link>
-                <Link to="/register">
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="w-full text-white border-white sm:w-auto hover:bg-white hover:text-blue-700"
-                  >
-                    Become a Traveler
-                  </Button>
+                <Link to="/register" className="flex-1">
+                  <Button className="w-full">Sign Up</Button>
                 </Link>
               </div>
-            </div>
-            <div className="hidden md:block">
-              <img
-                src="https://images.unsplash.com/photo-1581553673739-c4906b5d0de8"
-                alt="Luggage and travel"
-                className="rounded-lg shadow-xl"
-              />
             </div>
           </div>
-        </div>
-      </section>
+        )} */}
+      {/* </header> */}
 
-      {/* Search Section */}
-      <section className="py-8 bg-white">
-        <div className="max-w-5xl px-4 mx-auto sm:px-6 lg:px-8">
-          <div className="relative z-10 p-6 -mt-16 bg-white rounded-lg shadow-lg">
-            <h2 className="mb-4 text-2xl font-bold text-gray-800">
-              Find Available Luggage Space
-            </h2>
-            <div className="flex flex-col gap-4 md:flex-row">
-              <div className="flex-grow">
-                <Input
-                  type="text"
-                  placeholder="Enter destination city or country"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  fullWidth
-                  className="h-12"
-                />
-              </div>
-              <Link to={`/trips?q=${searchQuery}`}>
-                <Button className="h-12 px-8">
-                  <Search className="w-5 h-5 mr-2" />
-                  Search
+      <main className="flex-1">
+        {/* Hero Section */}
+        <section className="py-8 md:py-16 bg-gradient-to-b from-background to-blue-50 dark:to-blue-950/20">
+          <div className="container flex flex-col items-center text-center space-y-8">
+            <Badge className="mb-2 bg-primary/10 text-primary hover:bg-primary/20 border-primary/20">
+              Luggage Sharing Platform
+            </Badge>
+            <h1 className="text-4xl font-bold tracking-tight md:text-6xl max-w-3xl">
+              Ship Your Packages with{" "}
+              <span className="text-primary">Travelers</span>
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-2xl">
+              GoBag connects travelers with extra luggage space to people who
+              need to send packages. Save money, ship faster, and help the
+              environment.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 mt-4">
+              <Link to="/register">
+                <Button size="lg" className="w-full sm:w-auto">
+                  Get Started
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+              <Link to="/how-it-works">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="w-full sm:w-auto"
+                >
+                  Learn More
                 </Button>
               </Link>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* How It Works */}
-      <section className="py-16 bg-gray-50">
-        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <div className="mb-16 text-center">
-            <h2 className="text-3xl font-bold text-gray-900">How It Works</h2>
-            <p className="mt-4 text-xl text-gray-600">
-              Simple steps to send or carry luggage
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-            {/* For Senders */}
-            <div className="p-8 bg-white rounded-lg shadow-md">
-              <div className="flex items-center justify-center w-16 h-16 mb-6 text-blue-600 bg-blue-100 rounded-full">
-                <Search className="w-8 h-8" />
-              </div>
-              <h3 className="mb-4 text-xl font-bold text-gray-900">
-                For Senders
-              </h3>
-              <ol className="space-y-4 text-gray-600">
-                <li className="flex">
-                  <span className="flex items-center justify-center flex-shrink-0 w-6 h-6 mr-3 text-sm font-medium text-white bg-blue-600 rounded-full">
-                    1
-                  </span>
-                  <span>Search for travelers going to your destination</span>
-                </li>
-                <li className="flex">
-                  <span className="flex items-center justify-center flex-shrink-0 w-6 h-6 mr-3 text-sm font-medium text-white bg-blue-600 rounded-full">
-                    2
-                  </span>
-                  <span>Book available luggage space</span>
-                </li>
-                <li className="flex">
-                  <span className="flex items-center justify-center flex-shrink-0 w-6 h-6 mr-3 text-sm font-medium text-white bg-blue-600 rounded-full">
-                    3
-                  </span>
-                  <span>Make secure payment through our platform</span>
-                </li>
-                <li className="flex">
-                  <span className="flex items-center justify-center flex-shrink-0 w-6 h-6 mr-3 text-sm font-medium text-white bg-blue-600 rounded-full">
-                    4
-                  </span>
-                  <span>Arrange pickup and delivery details</span>
-                </li>
-              </ol>
-              <div className="mt-8">
-                <Link to="/trips">
-                  <Button variant="outline" fullWidth>
-                    Find Travelers
-                  </Button>
-                </Link>
+            <div className="mt-8 relative w-full max-w-5xl">
+              <div className="aspect-video rounded-2xl overflow-hidden border shadow-xl">
+                <img
+                  src={GoBagImage}
+                  alt="GoBag platform preview"
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
+          </div>
+        </section>
 
-            {/* For Travelers */}
-            <div className="p-8 bg-white rounded-lg shadow-md">
-              <div className="flex items-center justify-center w-16 h-16 mb-6 text-blue-600 bg-blue-100 rounded-full">
-                <Plane className="w-8 h-8" />
-              </div>
-              <h3 className="mb-4 text-xl font-bold text-gray-900">
-                For Travelers
-              </h3>
-              <ol className="space-y-4 text-gray-600">
-                <li className="flex">
-                  <span className="flex items-center justify-center flex-shrink-0 w-6 h-6 mr-3 text-sm font-medium text-white bg-blue-600 rounded-full">
-                    1
-                  </span>
-                  <span>Create a trip with your travel details</span>
-                </li>
-                <li className="flex">
-                  <span className="flex items-center justify-center flex-shrink-0 w-6 h-6 mr-3 text-sm font-medium text-white bg-blue-600 rounded-full">
-                    2
-                  </span>
-                  <span>Specify available luggage space and pricing</span>
-                </li>
-                <li className="flex">
-                  <span className="flex items-center justify-center flex-shrink-0 w-6 h-6 mr-3 text-sm font-medium text-white bg-blue-600 rounded-full">
-                    3
-                  </span>
-                  <span>Review and accept booking requests</span>
-                </li>
-                <li className="flex">
-                  <span className="flex items-center justify-center flex-shrink-0 w-6 h-6 mr-3 text-sm font-medium text-white bg-blue-600 rounded-full">
-                    4
-                  </span>
-                  <span>Deliver items and receive payment</span>
-                </li>
-              </ol>
-              <div className="mt-8">
-                <Link to="/register?role=traveller">
-                  <Button variant="outline" fullWidth>
-                    Become a Traveler
-                  </Button>
-                </Link>
-              </div>
+        {/* How It Works Section */}
+        <section className="py-20 bg-background">
+          <div className="container">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl font-bold mb-4">How GoBag Works</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Simple, secure, and beneficial for everyone involved
+              </p>
             </div>
 
-            {/* Platform Benefits */}
-            <div className="p-8 bg-white rounded-lg shadow-md">
-              <div className="flex items-center justify-center w-16 h-16 mb-6 text-blue-600 bg-blue-100 rounded-full">
-                <Shield className="w-8 h-8" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              <Card className="border-primary/20">
+                <CardHeader>
+                  <div className="flex items-center space-x-3">
+                    <div className="rounded-full bg-primary/10 p-2">
+                      <Plane className="h-5 w-5 text-primary" />
+                    </div>
+                    <CardTitle>For Travelers</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <ol className="space-y-6 mt-2">
+                    <li className="flex items-start">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-medium mr-3">
+                        1
+                      </span>
+                      <div>
+                        <h4 className="font-medium text-lg">Post Your Trip</h4>
+                        <p className="text-muted-foreground">
+                          Share your travel plans, including dates, route, and
+                          available luggage space.
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-medium mr-3">
+                        2
+                      </span>
+                      <div>
+                        <h4 className="font-medium text-lg">
+                          Receive Package Requests
+                        </h4>
+                        <p className="text-muted-foreground">
+                          Review and accept package delivery requests from
+                          senders along your route.
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-medium mr-3">
+                        3
+                      </span>
+                      <div>
+                        <h4 className="font-medium text-lg">
+                          Collect & Deliver
+                        </h4>
+                        <p className="text-muted-foreground">
+                          Pick up the package, carry it during your trip, and
+                          deliver it to the recipient.
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-medium mr-3">
+                        4
+                      </span>
+                      <div>
+                        <h4 className="font-medium text-lg">Get Paid</h4>
+                        <p className="text-muted-foreground">
+                          Earn money for utilizing your unused luggage space.
+                          Payments are secure and guaranteed.
+                        </p>
+                      </div>
+                    </li>
+                  </ol>
+                  <div className="mt-8">
+                    <Link to="/register?as=traveler">
+                      <Button className="w-full">
+                        Join as a Traveler
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-primary/20">
+                <CardHeader>
+                  <div className="flex items-center space-x-3">
+                    <div className="rounded-full bg-primary/10 p-2">
+                      <Package className="h-5 w-5 text-primary" />
+                    </div>
+                    <CardTitle>For Senders</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <ol className="space-y-6 mt-2">
+                    <li className="flex items-start">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-medium mr-3">
+                        1
+                      </span>
+                      <div>
+                        <h4 className="font-medium text-lg">
+                          Create a Package Request
+                        </h4>
+                        <p className="text-muted-foreground">
+                          Specify your package details, including size, weight,
+                          pickup and delivery locations.
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-medium mr-3">
+                        2
+                      </span>
+                      <div>
+                        <h4 className="font-medium text-lg">Find a Traveler</h4>
+                        <p className="text-muted-foreground">
+                          Browse available travelers or wait for a match based
+                          on your route requirements.
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-medium mr-3">
+                        3
+                      </span>
+                      <div>
+                        <h4 className="font-medium text-lg">Secure Payment</h4>
+                        <p className="text-muted-foreground">
+                          Pay through our secure platform. Funds are only
+                          released when delivery is confirmed.
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-medium mr-3">
+                        4
+                      </span>
+                      <div>
+                        <h4 className="font-medium text-lg">
+                          Receive Your Package
+                        </h4>
+                        <p className="text-muted-foreground">
+                          Get your package delivered faster and at a lower cost
+                          than traditional shipping methods.
+                        </p>
+                      </div>
+                    </li>
+                  </ol>
+                  <div className="mt-8">
+                    <Link to="/register?as=sender">
+                      <Button className="w-full">
+                        Join as a Sender
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
+
+        {/* Benefits Section */}
+        <section className="py-20 bg-blue-50 dark:bg-blue-950/10">
+          <div className="container">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl font-bold mb-4">Why Choose GoBag</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Benefits that make a difference for both travelers and senders
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              <Card className="bg-background border-primary/10 hover:border-primary/30 transition-colors">
+                <CardContent className="pt-6">
+                  <div className="flex flex-col items-center text-center space-y-4">
+                    <div className="rounded-full bg-primary/10 p-4">
+                      <DollarSign className="h-8 w-8 text-primary" />
+                    </div>
+                    <h3 className="text-xl font-medium">Cost-Effective</h3>
+                    <p className="text-muted-foreground">
+                      Save up to 70% compared to traditional international
+                      shipping services.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-background border-primary/10 hover:border-primary/30 transition-colors">
+                <CardContent className="pt-6">
+                  <div className="flex flex-col items-center text-center space-y-4">
+                    <div className="rounded-full bg-primary/10 p-4">
+                      <Clock className="h-8 w-8 text-primary" />
+                    </div>
+                    <h3 className="text-xl font-medium">Faster Delivery</h3>
+                    <p className="text-muted-foreground">
+                      Direct routes mean your packages arrive days or even weeks
+                      faster.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-background border-primary/10 hover:border-primary/30 transition-colors">
+                <CardContent className="pt-6">
+                  <div className="flex flex-col items-center text-center space-y-4">
+                    <div className="rounded-full bg-primary/10 p-4">
+                      <Shield className="h-8 w-8 text-primary" />
+                    </div>
+                    <h3 className="text-xl font-medium">Secure & Insured</h3>
+                    <p className="text-muted-foreground">
+                      Every package is insured up to $1,000 with our
+                      comprehensive protection plan.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-background border-primary/10 hover:border-primary/30 transition-colors">
+                <CardContent className="pt-6">
+                  <div className="flex flex-col items-center text-center space-y-4">
+                    <div className="rounded-full bg-primary/10 p-4">
+                      <Globe className="h-8 w-8 text-primary" />
+                    </div>
+                    <h3 className="text-xl font-medium">Global Reach</h3>
+                    <p className="text-muted-foreground">
+                      Access to over 10,000 routes worldwide, including remote
+                      and hard-to-reach locations.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-background border-primary/10 hover:border-primary/30 transition-colors">
+                <CardContent className="pt-6">
+                  <div className="flex flex-col items-center text-center space-y-4">
+                    <div className="rounded-full bg-primary/10 p-4">
+                      <Users className="h-8 w-8 text-primary" />
+                    </div>
+                    <h3 className="text-xl font-medium">Community-Driven</h3>
+                    <p className="text-muted-foreground">
+                      Join a trusted network of verified travelers and senders
+                      with 98% positive ratings.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-background border-primary/10 hover:border-primary/30 transition-colors">
+                <CardContent className="pt-6">
+                  <div className="flex flex-col items-center text-center space-y-4">
+                    <div className="rounded-full bg-primary/10 p-4">
+                      <Award className="h-8 w-8 text-primary" />
+                    </div>
+                    <h3 className="text-xl font-medium">Eco-Friendly</h3>
+                    <p className="text-muted-foreground">
+                      Reduce carbon emissions by utilizing existing travel
+                      routes instead of dedicated shipping.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
+
+        {/* Stats Section */}
+        <section className="py-20 bg-background">
+          <div className="container">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+              <div className="space-y-2">
+                <p className="text-5xl font-bold text-primary">150+</p>
+                <p className="text-lg text-muted-foreground">
+                  Countries Covered
+                </p>
               </div>
-              <h3 className="mb-4 text-xl font-bold text-gray-900">
-                Platform Benefits
-              </h3>
-              <ul className="space-y-4 text-gray-600">
-                <li className="flex">
-                  <span className="flex-shrink-0 mr-3 text-blue-600">✓</span>
-                  <span>Secure payment processing</span>
-                </li>
-                <li className="flex">
-                  <span className="flex-shrink-0 mr-3 text-blue-600">✓</span>
-                  <span>Verified user profiles with reviews</span>
-                </li>
-                <li className="flex">
-                  <span className="flex-shrink-0 mr-3 text-blue-600">✓</span>
-                  <span>24/7 customer support</span>
-                </li>
-                <li className="flex">
-                  <span className="flex-shrink-0 mr-3 text-blue-600">✓</span>
-                  <span>Luggage protection up to $500</span>
-                </li>
-                <li className="flex">
-                  <span className="flex-shrink-0 mr-3 text-blue-600">✓</span>
-                  <span>Transparent pricing with no hidden fees</span>
-                </li>
-                <li className="flex">
-                  <span className="flex-shrink-0 mr-3 text-blue-600">✓</span>
-                  <span>Easy communication between parties</span>
-                </li>
-              </ul>
-              <div className="mt-8">
-                <Link to="/about">
-                  <Button variant="outline" fullWidth>
+              <div className="space-y-2">
+                <p className="text-5xl font-bold text-primary">50K+</p>
+                <p className="text-lg text-muted-foreground">
+                  Active Travelers
+                </p>
+              </div>
+              <div className="space-y-2">
+                <p className="text-5xl font-bold text-primary">200K+</p>
+                <p className="text-lg text-muted-foreground">
+                  Packages Delivered
+                </p>
+              </div>
+              <div className="space-y-2">
+                <p className="text-5xl font-bold text-primary">98%</p>
+                <p className="text-lg text-muted-foreground">
+                  Satisfaction Rate
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Testimonials */}
+        <section className="py-20 bg-blue-50 dark:bg-blue-950/10">
+          <div className="container">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl font-bold mb-4">What Our Users Say</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Real experiences from our global community
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[
+                {
+                  quote:
+                    "GoBag helped me earn over $500 on my trip to Europe by delivering packages. It was easy and made my travel more meaningful.",
+                  author: "James T.",
+                  role: "Traveler from New York",
+                  avatar: "/placeholder.svg?height=60&width=60",
+                  initials: "JT",
+                },
+                {
+                  quote:
+                    "I needed to send a birthday gift to my sister in Paris urgently. GoBag found me a traveler who delivered it the next day at half the cost of express shipping!",
+                  author: "Maria L.",
+                  role: "Sender from Madrid",
+                  avatar: "/placeholder.svg?height=60&width=60",
+                  initials: "ML",
+                },
+                {
+                  quote:
+                    "As a frequent business traveler, GoBag has become a part of my routine. I've met amazing people and offset my travel costs significantly.",
+                  author: "Robert K.",
+                  role: "Traveler from Singapore",
+                  avatar: "/placeholder.svg?height=60&width=60",
+                  initials: "RK",
+                },
+              ].map((testimonial, index) => (
+                <Card key={index} className="bg-background border-primary/10">
+                  <CardContent className="pt-6">
+                    <div className="flex flex-col space-y-4">
+                      <p className="text-lg italic">"{testimonial.quote}"</p>
+                      <div className="flex items-center space-x-3 mt-4">
+                        <Avatar className="h-12 w-12">
+                          <AvatarImage
+                            src={testimonial.avatar}
+                            alt={testimonial.author}
+                          />
+                          <AvatarFallback className="bg-primary/10 text-primary">
+                            {testimonial.initials}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="font-medium">{testimonial.author}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {testimonial.role}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="py-20 bg-primary text-primary-foreground">
+          <div className="container">
+            <div className="flex flex-col items-center text-center space-y-6 max-w-3xl mx-auto">
+              <h2 className="text-4xl font-bold">
+                Ready to Join the GoBag Community?
+              </h2>
+              <p className="text-xl opacity-90">
+                Whether you're traveling or need to send a package, GoBag
+                connects you with a global community of trusted users. Start
+                your journey today!
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 mt-4">
+                <Link to="/register">
+                  <Button
+                    size="lg"
+                    variant="secondary"
+                    className="w-full sm:w-auto"
+                  >
+                    Sign Up Now
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+                <Link to="/how-it-works">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="w-full sm:w-auto bg-primary-foreground/10 hover:bg-primary-foreground/20 border-primary-foreground/20"
+                  >
                     Learn More
                   </Button>
                 </Link>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Benefits Section */}
-      <section className="py-16 bg-white">
-        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <div className="mb-16 text-center">
-            <h2 className="text-3xl font-bold text-gray-900">
-              Why Choose LuggageShare?
-            </h2>
-            <p className="mt-4 text-xl text-gray-600">
-              Benefits for both senders and travelers
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-            <div className="text-center">
-              <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 text-blue-600 bg-blue-100 rounded-full">
-                <CreditCard className="w-8 h-8" />
-              </div>
-              <h3 className="mb-2 text-lg font-semibold text-gray-900">
-                Save Money
-              </h3>
-              <p className="text-gray-600">
-                Up to 80% cheaper than traditional shipping methods
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 text-blue-600 bg-blue-100 rounded-full">
-                <Shield className="w-8 h-8" />
-              </div>
-              <h3 className="mb-2 text-lg font-semibold text-gray-900">
-                Secure & Safe
-              </h3>
-              <p className="text-gray-600">
-                Verified users, secure payments, and item protection
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 text-blue-600 bg-blue-100 rounded-full">
-                <Plane className="w-8 h-8" />
-              </div>
-              <h3 className="mb-2 text-lg font-semibold text-gray-900">
-                Global Network
-              </h3>
-              <p className="text-gray-600">
-                Connect with travelers going to 150+ countries worldwide
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 text-blue-600 bg-blue-100 rounded-full">
-                <Star className="w-8 h-8" />
-              </div>
-              <h3 className="mb-2 text-lg font-semibold text-gray-900">
-                Trusted Community
-              </h3>
-              <p className="text-gray-600">
-                Over 10,000 successful deliveries with 4.8/5 rating
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="py-16 bg-gray-50">
-        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <div className="mb-16 text-center">
-            <h2 className="text-3xl font-bold text-gray-900">
-              What Our Users Say
-            </h2>
-            <p className="mt-4 text-xl text-gray-600">
-              Hear from our community of senders and travelers
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-            <div className="p-8 bg-white rounded-lg shadow-md">
-              <div className="flex items-center mb-4">
-                <div className="flex-shrink-0">
-                  <img
-                    className="w-12 h-12 rounded-full"
-                    src="https://images.unsplash.com/photo-1494790108377-be9c29b29330"
-                    alt="User"
-                  />
-                </div>
-                <div className="ml-4">
-                  <h4 className="text-lg font-semibold text-gray-900">
-                    Sarah Johnson
-                  </h4>
-                  <p className="text-gray-600">Sender</p>
-                </div>
-              </div>
-              <div className="flex mb-4 text-yellow-400">
-                <Star className="w-5 h-5 fill-current" />
-                <Star className="w-5 h-5 fill-current" />
-                <Star className="w-5 h-5 fill-current" />
-                <Star className="w-5 h-5 fill-current" />
-                <Star className="w-5 h-5 fill-current" />
-              </div>
-              <p className="text-gray-600">
-                "I needed to send a package to my daughter studying abroad.
-                Traditional shipping was going to cost me over $200, but I found
-                a traveler on LuggageShare and paid just $45! The process was
-                smooth and secure."
-              </p>
-            </div>
-
-            <div className="p-8 bg-white rounded-lg shadow-md">
-              <div className="flex items-center mb-4">
-                <div className="flex-shrink-0">
-                  <img
-                    className="w-12 h-12 rounded-full"
-                    src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e"
-                    alt="User"
-                  />
-                </div>
-                <div className="ml-4">
-                  <h4 className="text-lg font-semibold text-gray-900">
-                    Michael Chen
-                  </h4>
-                  <p className="text-gray-600">Traveler</p>
-                </div>
-              </div>
-              <div className="flex mb-4 text-yellow-400">
-                <Star className="w-5 h-5 fill-current" />
-                <Star className="w-5 h-5 fill-current" />
-                <Star className="w-5 h-5 fill-current" />
-                <Star className="w-5 h-5 fill-current" />
-                <Star className="w-5 h-5 fill-current" />
-              </div>
-              <p className="text-gray-600">
-                "As a frequent traveler, I always have extra space in my
-                luggage. LuggageShare helps me offset my travel costs by earning
-                money for space I wasn't using anyway. I've made over $1,200 in
-                the past year!"
-              </p>
-            </div>
-
-            <div className="p-8 bg-white rounded-lg shadow-md">
-              <div className="flex items-center mb-4">
-                <div className="flex-shrink-0">
-                  <img
-                    className="w-12 h-12 rounded-full"
-                    src="https://images.unsplash.com/photo-1580489944761-15a19d654956"
-                    alt="User"
-                  />
-                </div>
-                <div className="ml-4">
-                  <h4 className="text-lg font-semibold text-gray-900">
-                    Elena Rodriguez
-                  </h4>
-                  <p className="text-gray-600">Sender</p>
-                </div>
-              </div>
-              <div className="flex mb-4 text-yellow-400">
-                <Star className="w-5 h-5 fill-current" />
-                <Star className="w-5 h-5 fill-current" />
-                <Star className="w-5 h-5 fill-current" />
-                <Star className="w-5 h-5 fill-current" />
-                <Star className="w-5 h-5 fill-current" />
-              </div>
-              <p className="text-gray-600">
-                "I run a small online business and shipping internationally was
-                eating into my profits. With LuggageShare, I can send products
-                to my international customers at a fraction of the cost. Game
-                changer!"
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-16 text-white bg-blue-600">
-        <div className="px-4 mx-auto text-center max-w-7xl sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold">Ready to Get Started?</h2>
-          <p className="max-w-3xl mx-auto mt-4 text-xl text-blue-100">
-            Join thousands of users who are already saving money and making
-            extra income through luggage sharing.
-          </p>
-          <div className="flex flex-col justify-center gap-4 mt-8 sm:flex-row">
-            <Link to="/register">
-              <Button
-                size="lg"
-                className="w-full text-blue-500 bg-white hover:bg-blue-50 sm:w-auto"
-              >
-                Sign Up Now
-              </Button>
-            </Link>
-            <Link to="/how-it-works">
-              <Button
-                size="lg"
-                variant="outline"
-                className="w-full text-white border-white hover:bg-blue-700 sm:w-auto"
-              >
-                Learn More
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
+        </section>
+      </main>
     </div>
   );
-};
-
-export default Home;
+}

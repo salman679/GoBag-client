@@ -47,7 +47,7 @@ export function DashboardShell({ children, className }: DashboardShellProps) {
   const menuItems = [
     { name: "Dashboard", href: "/user/dashboard", icon: Home },
     { name: "My Trips", href: "/user/trips", icon: Plane },
-    { name: "My Packages", href: "/user/packages", icon: Luggage },
+    { name: "My Packages", href: "/user/requests", icon: Luggage },
     { name: "Messages", href: "/messages", icon: MessageSquare },
     { name: "Notifications", href: "/notifications", icon: Bell },
     { name: "Payments", href: "/payments", icon: CreditCard },

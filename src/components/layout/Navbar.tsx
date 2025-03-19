@@ -1,7 +1,8 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/authStore";
-import { Menu, Bell, User, LogOut, Luggage } from "lucide-react";
+import { Menu, Bell, User, LogOut } from "lucide-react";
+import logo from "../../assets/logo_blue.png";
 import { Button } from "@/components/Button";
 
 const Navbar: React.FC = () => {
@@ -21,10 +22,13 @@ const Navbar: React.FC = () => {
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
               <Link to="/" className="flex items-center">
-                <Luggage className="h-8 w-8 text-blue-600" />
-                <span className="ml-2 text-xl font-bold text-gray-900">
+                <div className="h-36 w-36 ">
+                  <img src={logo} alt="logo" />
+                </div>
+                {/* <span className="ml-2 text-xl font-bold text-gray-900">
                   GoBag
                 </span>
+                <img src={logo} alt="logo" /> */}
               </Link>
             </div>
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
