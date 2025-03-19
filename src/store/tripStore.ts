@@ -1,7 +1,12 @@
 import { create } from "zustand";
 import { Trip, Booking } from "../types";
 // import { format, addDays } from "date-fns";
-import { createTrip, getTrips } from "@/services/tripService";
+import {
+  createTrip,
+  getTrips,
+  getTripsByUser,
+  updateTripStatus,
+} from "@/services/tripService";
 import { useAuthStore } from "./authStore";
 
 interface TripState {
@@ -9,6 +14,7 @@ interface TripState {
   bookings: Booking[];
   isLoading: boolean;
   fetchTrips: () => Promise<void>;
+  fetchTripsByUser: (email: string) => Promise<void>;
   createTrip: (data: {
     departureLocation: string;
     destination: string;
@@ -44,6 +50,19 @@ export const useTripStore = create<TripState>((set, get) => ({
 
     try {
       const trips = await getTrips();
+
+      set({ trips: trips, isLoading: false });
+    } catch (error) {
+      set({ isLoading: false });
+      console.error("Error fetching trips:", error);
+    }
+  },
+
+  fetchTripsByUser: async (email: string) => {
+    set({ isLoading: true });
+
+    try {
+      const trips = await getTripsByUser(email);
 
       set({ trips: trips, isLoading: false });
     } catch (error) {
@@ -150,9 +169,6 @@ export const useTripStore = create<TripState>((set, get) => ({
     set({ isLoading: true });
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
       const { trips } = get();
 
       const updatedTrips = trips.map((trip) => {
@@ -161,6 +177,8 @@ export const useTripStore = create<TripState>((set, get) => ({
         }
         return trip;
       });
+
+      await updateTripStatus(tripId, status);
 
       set({ trips: updatedTrips, isLoading: false });
     } catch (error) {

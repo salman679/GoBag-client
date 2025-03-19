@@ -17,7 +17,7 @@ import { Button } from "../../components/Button";
 import { Card, CardHeader, CardContent } from "../../components/ui/Card";
 
 const TravelerTrips: React.FC = () => {
-  const { trips, bookings, fetchTrips, updateTripStatus, isLoading } =
+  const { trips, bookings, fetchTripsByUser, updateTripStatus, isLoading } =
     useTripStore();
   const { user } = useAuthStore();
   const [myTrips, setMyTrips] = useState<Trip[]>([]);
@@ -26,8 +26,11 @@ const TravelerTrips: React.FC = () => {
   >("active");
 
   useEffect(() => {
-    fetchTrips();
-  }, [fetchTrips]);
+    if (user?.email) {
+      const trips = fetchTripsByUser(user.email);
+      console.log(trips);
+    }
+  }, [user?.email, fetchTripsByUser]);
 
   useEffect(() => {
     if (trips.length > 0 && user) {
@@ -47,6 +50,7 @@ const TravelerTrips: React.FC = () => {
   };
 
   const handleUpdateStatus = async (tripId: string, status: Trip["status"]) => {
+    console.log(tripId, status);
     await updateTripStatus(tripId, status);
   };
 
@@ -70,7 +74,7 @@ const TravelerTrips: React.FC = () => {
           </p>
         </div>
         <div className="mt-4 md:mt-0">
-          <Link to="/traveller/trips/create">
+          <Link to="/user/trips/new">
             <Button>
               <Plus className="h-5 w-5 mr-2" />
               Create New Trip
@@ -129,7 +133,7 @@ const TravelerTrips: React.FC = () => {
           </p>
           {activeTab === "active" && (
             <div className="mt-6">
-              <Link to="/traveler/trips/create">
+              <Link to="/user/trips/new">
                 <Button>
                   <Plus className="h-5 w-5 mr-2" />
                   Create New Trip
@@ -178,7 +182,7 @@ const TravelerTrips: React.FC = () => {
                             size="sm"
                             variant="outline"
                             onClick={() =>
-                              handleUpdateStatus(trip.id, "completed")
+                              handleUpdateStatus(trip._id, "completed")
                             }
                           >
                             Mark Completed
@@ -187,7 +191,7 @@ const TravelerTrips: React.FC = () => {
                             size="sm"
                             variant="outline"
                             onClick={() =>
-                              handleUpdateStatus(trip.id, "cancelled")
+                              handleUpdateStatus(trip._id, "cancelled")
                             }
                           >
                             Cancel

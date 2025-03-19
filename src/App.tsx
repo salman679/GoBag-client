@@ -278,7 +278,9 @@ function App() {
             path="/user/my-trips"
             element={
               <ProtectedRoute allowedRoles={["user"]}>
-                <TravelerTrips />
+                <div className="px-4 sm:px-6 lg:px-8 py-12">
+                  <TravelerTrips />
+                </div>
               </ProtectedRoute>
             }
           />

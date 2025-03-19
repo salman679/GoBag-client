@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Search, Filter, MapPin, Calendar } from "lucide-react";
+import { Search, Filter, MapPin } from "lucide-react";
 import { useTripStore } from "../../store/tripStore";
 import TripCard from "../../components/trips/TripCard";
 import { Input } from "../../components/ui/Input";
@@ -26,13 +26,9 @@ const TripsList: React.FC = () => {
     fetchTrips();
   }, [fetchTrips]);
 
-  useEffect(() => {
-    if (trips.length > 0) {
-      applyFilters();
-    }
-  }, [trips, searchQuery, departureLocation, destination, minSpace, maxPrice]);
+  console.log(trips);
 
-  const applyFilters = () => {
+  const applyFilters = useCallback(() => {
     let filtered = [...trips];
 
     // Apply search query
@@ -80,7 +76,7 @@ const TripsList: React.FC = () => {
     filtered = filtered.filter((trip) => trip.status === "active");
 
     setFilteredTrips(filtered);
-  };
+  }, [departureLocation, destination, minSpace, maxPrice, searchQuery, trips]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -94,6 +90,12 @@ const TripsList: React.FC = () => {
     setMaxPrice("");
     setSearchQuery("");
   };
+
+  useEffect(() => {
+    if (trips.length > 0) {
+      applyFilters();
+    }
+  }, [trips, applyFilters]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
