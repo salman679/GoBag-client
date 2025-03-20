@@ -1,61 +1,62 @@
-import { Trip } from "@/types";
+import { Package } from "@/types";
 import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-export const createTrip = async (trip: Trip) => {
+export const createPackage = async (pkg: Package) => {
   try {
     const response = await axios.post(
-      `${API_URL}/api/v1/trips/create-trip`,
-      trip
+      `${API_URL}/api/v1/requests/create-request`,
+      pkg
     );
     return response.data;
   } catch (error: any) {
     console.error(
-      "Error creating user:",
+      "Error creating package:",
       error.response?.data || error.message
     );
     throw error;
   }
 };
 
-export const getTrips = async () => {
+export const getPackages = async () => {
   try {
-    const response = await axios.get(`${API_URL}/api/v1/trips/all`);
+    const response = await axios.get(`${API_URL}/api/v1/packages/all`);
     return response.data;
   } catch (error: any) {
     console.error(
-      "Error getting trips:",
+      "Error getting packages:",
       error.response?.data || error.message
     );
     throw error;
   }
 };
 
-export const getTripsByUser = async (email: string) => {
+export const getPackagesByUser = async (email: string) => {
   try {
-    const response = await axios.get(`${API_URL}/api/v1/trips/user/${email}`);
+    const response = await axios.get(
+      `${API_URL}/api/v1/packages/user/${email}`
+    );
     return response.data;
   } catch (error: any) {
     console.error(
-      "Error getting trips:",
+      "Error getting packages:",
       error.response?.data || error.message
     );
     throw error;
   }
 };
 
-export const updateTripStatus = async (id: string, status: string) => {
+export const updatePackageStatus = async (id: string, status: string) => {
   try {
     console.log(id, status);
-
-    const response = await axios.put(`${API_URL}/api/v1/trips/${id}`, {
+    const response = await axios.put(`${API_URL}/api/v1/packages/${id}`, {
       status,
     });
     return response.data;
   } catch (error: any) {
     console.error(
-      "Error getting trips:",
+      "Error updating package status:",
       error.response?.data || error.message
     );
     throw error;

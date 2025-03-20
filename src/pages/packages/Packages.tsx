@@ -541,8 +541,8 @@ export default function BrowsePackages() {
                         <Button
                           type="submit"
                           className="flex-1"
-                          onClick={() => {
-                            handleSearch;
+                          onClick={(e) => {
+                            handleSearch(e);
                             toggleFilters(); // Close filters after applying on mobile
                           }}
                         >

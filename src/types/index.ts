@@ -30,6 +30,34 @@ export interface Trip {
   createdAt: Date;
 }
 
+export interface Package {
+  senderName: string;
+  senderEmail: string;
+  senderProfilePic?: string;
+  departureCity: string;
+  departureCountry: string;
+  destinationCity: string;
+  destinationCountry: string;
+  deliveryDate: Date;
+  packageSize: string;
+  weight: number; // in kg
+  description?: string;
+  budget: number;
+  urgency: "standard" | "urgent" | "flexible";
+  recipientName: string;
+  recipientPhone: string;
+  specialInstructions?: string;
+  currency: string;
+  status:
+    | "pending"
+    | "accepted"
+    | "in-transit"
+    | "completed"
+    | "cancelled"
+    | "draft";
+  createdAt: Date;
+}
+
 export interface Booking {
   id: string;
   tripId: string;
