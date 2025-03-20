@@ -1,5 +1,7 @@
 # Gobag - Luggage Sharing Platform
 
+#awaid deployment
+
 ## Introduction
 Gobag is a luggage-sharing platform that connects travelers with extra luggage space to individuals who need to send packages affordably and efficiently. Our platform aims to optimize empty return trips, helping both travelers and senders save money and time.
 
