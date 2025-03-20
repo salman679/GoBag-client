@@ -21,7 +21,7 @@ export const createPackage = async (pkg: Package) => {
 
 export const getPackages = async () => {
   try {
-    const response = await axios.get(`${API_URL}/api/v1/packages/all`);
+    const response = await axios.get(`${API_URL}/api/v1/requests/all`);
     return response.data;
   } catch (error: any) {
     console.error(

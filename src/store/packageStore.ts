@@ -7,7 +7,7 @@ import { Package } from "../types";
 //   updatePackageStatus,
 // } from "@/services/packageService";
 import { useAuthStore } from "./authStore";
-import { createPackage } from "@/services/packageService";
+import { createPackage, getPackages } from "@/services/packageService";
 
 interface PackageState {
   packages: Package[];

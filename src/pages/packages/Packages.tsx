@@ -1,6 +1,6 @@
 import type React from "react";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -56,134 +56,135 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Link } from "react-router-dom";
+import { usePackageStore } from "@/store/packageStore";
 
 // Mock data for package requests
-const packageRequests = [
-  {
-    id: 1,
-    origin: "New York, USA",
-    destination: "London, UK",
-    date: addDays(new Date(), 7),
-    size: "Medium",
-    weight: "3.5 kg",
-    category: "Electronics",
-    description:
-      "A new laptop that needs to be delivered to my brother who is studying abroad.",
-    budget: 120,
-    urgency: "Standard",
-    sender: {
-      name: "Alice Smith",
-      avatar: "/placeholder.svg?height=40&width=40",
-      initials: "AS",
-      rating: 4.8,
-      reviews: 12,
-    },
-    status: "Open",
-  },
-  {
-    id: 2,
-    origin: "Paris, France",
-    destination: "Berlin, Germany",
-    date: addDays(new Date(), 5),
-    size: "Small",
-    weight: "1.2 kg",
-    category: "Documents",
-    description:
-      "Important business documents that need to be delivered to our Berlin office.",
-    budget: 80,
-    urgency: "Urgent",
-    sender: {
-      name: "Robert Johnson",
-      avatar: "/placeholder.svg?height=40&width=40",
-      initials: "RJ",
-      rating: 4.5,
-      reviews: 8,
-    },
-    status: "Open",
-  },
-  {
-    id: 3,
-    origin: "Tokyo, Japan",
-    destination: "Seoul, South Korea",
-    date: addDays(new Date(), 10),
-    size: "Small",
-    weight: "0.8 kg",
-    category: "Gifts",
-    description:
-      "A birthday gift for my friend in Seoul. It's a small collectible item.",
-    budget: 60,
-    urgency: "Standard",
-    sender: {
-      name: "Yuki Tanaka",
-      avatar: "/placeholder.svg?height=40&width=40",
-      initials: "YT",
-      rating: 5.0,
-      reviews: 15,
-    },
-    status: "Open",
-  },
-  {
-    id: 4,
-    origin: "Sydney, Australia",
-    destination: "Auckland, New Zealand",
-    date: addDays(new Date(), 14),
-    size: "Medium",
-    weight: "2.5 kg",
-    category: "Clothing",
-    description: "Winter clothes for my daughter who is studying in Auckland.",
-    budget: 90,
-    urgency: "Flexible",
-    sender: {
-      name: "Emma Wilson",
-      avatar: "/placeholder.svg?height=40&width=40",
-      initials: "EW",
-      rating: 4.7,
-      reviews: 9,
-    },
-    status: "Open",
-  },
-  {
-    id: 5,
-    origin: "Dubai, UAE",
-    destination: "Mumbai, India",
-    date: addDays(new Date(), 3),
-    size: "Large",
-    weight: "8 kg",
-    category: "Gifts",
-    description:
-      "Wedding gifts for my cousin who is getting married next month.",
-    budget: 150,
-    urgency: "Urgent",
-    sender: {
-      name: "Raj Patel",
-      avatar: "/placeholder.svg?height=40&width=40",
-      initials: "RP",
-      rating: 4.6,
-      reviews: 11,
-    },
-    status: "Open",
-  },
-  {
-    id: 6,
-    origin: "San Francisco, USA",
-    destination: "Toronto, Canada",
-    date: addDays(new Date(), 8),
-    size: "Small",
-    weight: "1.5 kg",
-    category: "Electronics",
-    description: "A smartphone that needs to be delivered to my sister.",
-    budget: 100,
-    urgency: "Standard",
-    sender: {
-      name: "David Chen",
-      avatar: "/placeholder.svg?height=40&width=40",
-      initials: "DC",
-      rating: 4.9,
-      reviews: 20,
-    },
-    status: "Open",
-  },
-];
+// const packages = [
+//   {
+//     id: 1,
+//     origin: "New York, USA",
+//     destination: "London, UK",
+//     date: addDays(new Date(), 7),
+//     size: "Medium",
+//     weight: "3.5 kg",
+//     category: "Electronics",
+//     description:
+//       "A new laptop that needs to be delivered to my brother who is studying abroad.",
+//     budget: 120,
+//     urgency: "Standard",
+//     sender: {
+//       name: "Alice Smith",
+//       avatar: "/placeholder.svg?height=40&width=40",
+//       initials: "AS",
+//       rating: 4.8,
+//       reviews: 12,
+//     },
+//     status: "Open",
+//   },
+//   {
+//     id: 2,
+//     origin: "Paris, France",
+//     destination: "Berlin, Germany",
+//     date: addDays(new Date(), 5),
+//     size: "Small",
+//     weight: "1.2 kg",
+//     category: "Documents",
+//     description:
+//       "Important business documents that need to be delivered to our Berlin office.",
+//     budget: 80,
+//     urgency: "Urgent",
+//     sender: {
+//       name: "Robert Johnson",
+//       avatar: "/placeholder.svg?height=40&width=40",
+//       initials: "RJ",
+//       rating: 4.5,
+//       reviews: 8,
+//     },
+//     status: "Open",
+//   },
+//   {
+//     id: 3,
+//     origin: "Tokyo, Japan",
+//     destination: "Seoul, South Korea",
+//     date: addDays(new Date(), 10),
+//     size: "Small",
+//     weight: "0.8 kg",
+//     category: "Gifts",
+//     description:
+//       "A birthday gift for my friend in Seoul. It's a small collectible item.",
+//     budget: 60,
+//     urgency: "Standard",
+//     sender: {
+//       name: "Yuki Tanaka",
+//       avatar: "/placeholder.svg?height=40&width=40",
+//       initials: "YT",
+//       rating: 5.0,
+//       reviews: 15,
+//     },
+//     status: "Open",
+//   },
+//   {
+//     id: 4,
+//     origin: "Sydney, Australia",
+//     destination: "Auckland, New Zealand",
+//     date: addDays(new Date(), 14),
+//     size: "Medium",
+//     weight: "2.5 kg",
+//     category: "Clothing",
+//     description: "Winter clothes for my daughter who is studying in Auckland.",
+//     budget: 90,
+//     urgency: "Flexible",
+//     sender: {
+//       name: "Emma Wilson",
+//       avatar: "/placeholder.svg?height=40&width=40",
+//       initials: "EW",
+//       rating: 4.7,
+//       reviews: 9,
+//     },
+//     status: "Open",
+//   },
+//   {
+//     id: 5,
+//     origin: "Dubai, UAE",
+//     destination: "Mumbai, India",
+//     date: addDays(new Date(), 3),
+//     size: "Large",
+//     weight: "8 kg",
+//     category: "Gifts",
+//     description:
+//       "Wedding gifts for my cousin who is getting married next month.",
+//     budget: 150,
+//     urgency: "Urgent",
+//     sender: {
+//       name: "Raj Patel",
+//       avatar: "/placeholder.svg?height=40&width=40",
+//       initials: "RP",
+//       rating: 4.6,
+//       reviews: 11,
+//     },
+//     status: "Open",
+//   },
+//   {
+//     id: 6,
+//     origin: "San Francisco, USA",
+//     destination: "Toronto, Canada",
+//     date: addDays(new Date(), 8),
+//     size: "Small",
+//     weight: "1.5 kg",
+//     category: "Electronics",
+//     description: "A smartphone that needs to be delivered to my sister.",
+//     budget: 100,
+//     urgency: "Standard",
+//     sender: {
+//       name: "David Chen",
+//       avatar: "/placeholder.svg?height=40&width=40",
+//       initials: "DC",
+//       rating: 4.9,
+//       reviews: 20,
+//     },
+//     status: "Open",
+//   },
+// ];
 
 export default function BrowsePackages() {
   const [searchParams, setSearchParams] = useState({
@@ -208,10 +209,14 @@ export default function BrowsePackages() {
   const [filtersVisible, setFiltersVisible] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const { packages, fetchPackages } = usePackageStore();
+
+  useEffect(() => {
+    fetchPackages();
+  }, [fetchPackages]);
+
   // Find the selected package details
-  const packageDetail = packageRequests.find(
-    (pkg) => pkg.id === selectedPackage
-  );
+  const packageDetail = packages.find((pkg) => pkg._id === selectedPackage);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -562,8 +567,7 @@ export default function BrowsePackages() {
                       <div>
                         <CardTitle>Available Packages</CardTitle>
                         <CardDescription>
-                          {packageRequests.length} packages available for
-                          delivery
+                          {packages.length} packages available for delivery
                         </CardDescription>
                       </div>
                       <div className="flex items-center gap-2 justify-between sm:justify-end">
@@ -609,15 +613,16 @@ export default function BrowsePackages() {
                   <CardContent>
                     {viewMode === "list" ? (
                       <div className="space-y-4">
-                        {packageRequests.map((pkg) => (
+                        {packages.map((pkg) => (
                           <Card key={pkg.id} className="overflow-hidden">
                             <div className="flex flex-col md:flex-row">
                               <div className="flex-1 p-3 md:p-4">
                                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
                                   <div>
                                     <h3 className="font-medium text-base md:text-lg flex flex-wrap items-center gap-2">
-                                      {pkg.origin} to {pkg.destination}
-                                      {pkg.urgency === "Urgent" && (
+                                      {pkg.departureCountry} to{" "}
+                                      {pkg.destinationCountry}
+                                      {pkg.urgency === "urgent" && (
                                         <Badge variant="destructive">
                                           Urgent
                                         </Badge>
@@ -625,7 +630,8 @@ export default function BrowsePackages() {
                                     </h3>
                                     <p className="text-sm text-muted-foreground flex items-center mt-1">
                                       <CalendarIcon className="h-3 w-3 mr-1" />
-                                      Delivery by {format(pkg.date, "PP")}
+                                      Delivery by{" "}
+                                      {format(pkg.deliveryDate, "PP")}
                                     </p>
                                   </div>
                                   <div className="text-right">
@@ -644,7 +650,7 @@ export default function BrowsePackages() {
                                     <p className="text-xs text-muted-foreground">
                                       Size
                                     </p>
-                                    <p className="text-sm">{pkg.size}</p>
+                                    <p className="text-sm">{pkg.packageSize}</p>
                                   </div>
                                   <div>
                                     <p className="text-xs text-muted-foreground">
@@ -652,12 +658,12 @@ export default function BrowsePackages() {
                                     </p>
                                     <p className="text-sm">{pkg.weight}</p>
                                   </div>
-                                  <div>
+                                  {/* <div>
                                     <p className="text-xs text-muted-foreground">
                                       Category
                                     </p>
                                     <p className="text-sm">{pkg.category}</p>
-                                  </div>
+                                  </div> */}
                                 </div>
 
                                 <div className="mt-3 md:mt-4">
@@ -672,18 +678,18 @@ export default function BrowsePackages() {
                                 <div className="flex items-center mt-3 md:mt-4 pt-3 md:pt-4 border-t">
                                   <Avatar className="h-8 w-8">
                                     <AvatarImage
-                                      src={pkg.sender.avatar}
-                                      alt={pkg.sender.name}
+                                      src={pkg.senderProfilePic}
+                                      alt={pkg.senderName}
                                     />
                                     <AvatarFallback>
-                                      {pkg.sender.initials}
+                                      {pkg.senderName.charAt(0)}
                                     </AvatarFallback>
                                   </Avatar>
                                   <div className="ml-2">
                                     <p className="text-sm font-medium">
-                                      {pkg.sender.name}
+                                      {pkg.senderName}
                                     </p>
-                                    <div className="flex items-center">
+                                    {/* <div className="flex items-center">
                                       <span className="text-xs text-yellow-500">
                                         ★
                                       </span>
@@ -691,7 +697,7 @@ export default function BrowsePackages() {
                                         {pkg.sender.rating} (
                                         {pkg.sender.reviews} reviews)
                                       </span>
-                                    </div>
+                                    </div> */}
                                   </div>
                                 </div>
                               </div>
@@ -701,7 +707,7 @@ export default function BrowsePackages() {
                                   variant="outline"
                                   size="sm"
                                   className="flex-1 md:w-[120px]"
-                                  onClick={() => setSelectedPackage(pkg.id)}
+                                  onClick={() => setSelectedPackage(pkg._id)}
                                 >
                                   <Eye className="h-4 w-4 mr-2" />
                                   Details
@@ -721,16 +727,17 @@ export default function BrowsePackages() {
                       </div>
                     ) : (
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {packageRequests.map((pkg) => (
-                          <Card key={pkg.id}>
+                        {packages.map((pkg) => (
+                          <Card key={pkg._id}>
                             <CardHeader className="pb-2 px-3 py-3 md:p-6 md:pb-2">
                               <div className="flex justify-between items-start">
                                 <CardTitle className="text-sm sm:text-base">
-                                  {pkg.origin} to {pkg.destination}
+                                  {pkg.departureCountry} to{" "}
+                                  {pkg.destinationCountry}
                                 </CardTitle>
                                 <Badge
                                   variant={
-                                    pkg.urgency === "Urgent"
+                                    pkg.urgency === "urgent"
                                       ? "destructive"
                                       : "outline"
                                   }
@@ -741,7 +748,7 @@ export default function BrowsePackages() {
                               </div>
                               <CardDescription className="flex items-center mt-1 text-xs sm:text-sm">
                                 <CalendarIcon className="h-3 w-3 mr-1" />
-                                {format(pkg.date, "PP")}
+                                {format(pkg.deliveryDate, "PP")}
                               </CardDescription>
                             </CardHeader>
                             <CardContent className="px-3 pb-3 md:p-6">
@@ -749,7 +756,7 @@ export default function BrowsePackages() {
                                 <div className="flex items-center">
                                   <Package className="h-4 w-4 text-muted-foreground mr-1" />
                                   <span className="text-xs sm:text-sm">
-                                    {pkg.size}, {pkg.weight}
+                                    {pkg.packageSize}, {pkg.weight}
                                   </span>
                                 </div>
                                 <div className="text-base sm:text-lg font-bold text-primary flex items-center">
@@ -765,25 +772,25 @@ export default function BrowsePackages() {
                               <div className="flex items-center mb-3">
                                 <Avatar className="h-6 w-6">
                                   <AvatarImage
-                                    src={pkg.sender.avatar}
-                                    alt={pkg.sender.name}
+                                    src={pkg.senderProfilePic}
+                                    alt={pkg.senderName}
                                   />
                                   <AvatarFallback>
-                                    {pkg.sender.initials}
+                                    {pkg.senderName.charAt(0)}
                                   </AvatarFallback>
                                 </Avatar>
                                 <div className="ml-2">
                                   <p className="text-xs font-medium">
-                                    {pkg.sender.name}
+                                    {pkg.senderName}
                                   </p>
-                                  <div className="flex items-center">
+                                  {/* <div className="flex items-center">
                                     <span className="text-xs text-yellow-500">
                                       ★
                                     </span>
                                     <span className="text-xs ml-1">
                                       {pkg.sender.rating}
                                     </span>
-                                  </div>
+                                  </div> */}
                                 </div>
                               </div>
 
@@ -792,7 +799,7 @@ export default function BrowsePackages() {
                                   variant="outline"
                                   size="sm"
                                   className="flex-1 text-xs sm:text-sm py-1 h-8"
-                                  onClick={() => setSelectedPackage(pkg.id)}
+                                  onClick={() => setSelectedPackage(pkg._id)}
                                 >
                                   <Eye className="h-3 w-3 mr-1" />
                                   Details
@@ -812,7 +819,7 @@ export default function BrowsePackages() {
                       </div>
                     )}
 
-                    {packageRequests.length === 0 && (
+                    {packages.length === 0 && (
                       <div className="text-center py-12">
                         <Package className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                         <h3 className="text-lg font-medium">
@@ -827,8 +834,7 @@ export default function BrowsePackages() {
 
                   <CardFooter className="flex justify-between">
                     <div className="text-sm text-muted-foreground">
-                      Showing {packageRequests.length} of{" "}
-                      {packageRequests.length} packages
+                      Showing {packages.length} of {packages.length} packages
                     </div>
                     <div className="flex items-center space-x-2">
                       <Button variant="outline" size="sm" disabled>
@@ -964,8 +970,9 @@ export default function BrowsePackages() {
               <div className="flex flex-col md:flex-row gap-4 md:gap-8">
                 <div className="flex-1">
                   <h3 className="text-base md:text-lg font-medium flex flex-wrap items-center gap-2">
-                    {packageDetail.origin} to {packageDetail.destination}
-                    {packageDetail.urgency === "Urgent" && (
+                    {packageDetail.departureCountry} to{" "}
+                    {packageDetail.destinationCountry}
+                    {packageDetail.urgency === "urgent" && (
                       <Badge variant="destructive">Urgent</Badge>
                     )}
                   </h3>
@@ -974,7 +981,7 @@ export default function BrowsePackages() {
                     <div>
                       <p className="text-sm font-medium">Delivery Date</p>
                       <p className="text-sm text-muted-foreground">
-                        {format(packageDetail.date, "PP")}
+                        {format(packageDetail.deliveryDate, "PP")}
                       </p>
                     </div>
                     <div>
@@ -986,7 +993,7 @@ export default function BrowsePackages() {
                     <div>
                       <p className="text-sm font-medium">Package Size</p>
                       <p className="text-sm text-muted-foreground">
-                        {packageDetail.size}
+                        {packageDetail.packageSize}
                       </p>
                     </div>
                     <div>
@@ -995,12 +1002,12 @@ export default function BrowsePackages() {
                         {packageDetail.weight}
                       </p>
                     </div>
-                    <div>
+                    {/* <div>
                       <p className="text-sm font-medium">Category</p>
                       <p className="text-sm text-muted-foreground">
                         {packageDetail.category}
                       </p>
-                    </div>
+                    </div> */}
                     <div>
                       <p className="text-sm font-medium">Status</p>
                       <Badge variant="outline">{packageDetail.status}</Badge>
@@ -1034,24 +1041,24 @@ export default function BrowsePackages() {
                     <div className="flex items-center space-x-3">
                       <Avatar className="h-10 w-10">
                         <AvatarImage
-                          src={packageDetail.sender.avatar}
-                          alt={packageDetail.sender.name}
+                          src={packageDetail.senderProfilePic}
+                          alt={packageDetail.senderName}
                         />
                         <AvatarFallback>
-                          {packageDetail.sender.initials}
+                          {packageDetail.senderName.charAt(0)}
                         </AvatarFallback>
                       </Avatar>
                       <div>
                         <p className="text-sm font-medium">
-                          {packageDetail.sender.name}
+                          {packageDetail.senderName}
                         </p>
-                        <div className="flex items-center">
+                        {/* <div className="flex items-center">
                           <span className="text-xs text-yellow-500">★</span>
                           <span className="text-xs ml-1">
                             {packageDetail.sender.rating} (
                             {packageDetail.sender.reviews} reviews)
                           </span>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
 
