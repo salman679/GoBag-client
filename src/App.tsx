@@ -82,7 +82,7 @@ function App() {
   const mobileNavItems = [
     { name: "Home", href: "/", icon: HomeIcon },
     { name: "Trips", href: "/trips", icon: Plane },
-    { name: "Packages", href: "/requests", icon: Luggage },
+    { name: "Packages", href: "/packages", icon: Luggage },
     { name: "Dashboard", href: "/user/dashboard", icon: User },
   ];
 
