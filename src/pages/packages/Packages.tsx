@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/Button";
+
 import { Badge } from "@/components/ui/badge";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -30,7 +31,7 @@ import {
 } from "@/components/ui/select";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
-import { format, addDays } from "date-fns";
+import { format } from "date-fns";
 import {
   Search,
   Package,
@@ -331,12 +332,7 @@ export default function BrowsePackages() {
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center justify-between">
                     <span>Filters</span>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={toggleFilters}
-                      className="md:hidden"
-                    >
+                    <Button onClick={toggleFilters} className="md:hidden">
                       <X className="h-4 w-4" />
                     </Button>
                   </CardTitle>
@@ -1182,7 +1178,7 @@ export default function BrowsePackages() {
           </div>
 
           <DialogFooter>
-            <Button variant="ghost" onClick={() => setShowLoginDialog(false)}>
+            <Button onClick={() => setShowLoginDialog(false)}>
               Maybe Later
             </Button>
           </DialogFooter>

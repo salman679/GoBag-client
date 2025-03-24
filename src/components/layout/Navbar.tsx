@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/authStore";
 import { Menu, Bell, User, LogOut } from "lucide-react";
-import logo from "../../assets/logo_blue.png";
+import logo from "../../assets/logo_blue-removebg-preview-removebg-preview.png";
 import { Button } from "@/components/Button";
 
 const Navbar: React.FC = () => {
@@ -25,56 +25,52 @@ const Navbar: React.FC = () => {
                 <div className="h-36 w-36 ">
                   <img src={logo} alt="logo" />
                 </div>
-                {/* <span className="ml-2 text-xl font-bold text-gray-900">
-                  GoBag
-                </span>
-                <img src={logo} alt="logo" /> */}
               </Link>
             </div>
-            <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-              <Link
-                to="/"
-                className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
-              >
-                Home
-              </Link>
-              <Link
-                to="/trips"
-                className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
-              >
-                Find Trips
-              </Link>
-              <Link
-                to="/packages"
-                className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
-              >
-                Find Packages
-              </Link>
-              {isAuthenticated && (
-                <>
-                  <Link
-                    to={"/user/my-trips"}
-                    className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                  >
-                    My Trips
-                  </Link>
-                  <Link
-                    to="/user/bookings"
-                    className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                  >
-                    My Bookings
-                  </Link>
-                </>
-              )}
-              {isAuthenticated && user?.role === "admin" && (
+          </div>
+          <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
+            <Link
+              to="/"
+              className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
+            >
+              Home
+            </Link>
+            <Link
+              to="/trips"
+              className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
+            >
+              Find Trips
+            </Link>
+            <Link
+              to="/packages"
+              className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
+            >
+              Find Packages
+            </Link>
+            {isAuthenticated && (
+              <>
                 <Link
-                  to="/admin/dashboard"
+                  to={"/user/my-trips"}
                   className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
                 >
-                  Admin Dashboard
+                  My Trips
                 </Link>
-              )}
-            </div>
+                <Link
+                  to="/user/bookings"
+                  className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                >
+                  My Bookings
+                </Link>
+              </>
+            )}
+            {isAuthenticated && user?.role === "admin" && (
+              <Link
+                to="/admin/dashboard"
+                className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              >
+                Admin Dashboard
+              </Link>
+            )}
           </div>
           <div className="hidden sm:ml-6 sm:flex sm:items-center">
             {isAuthenticated ? (
