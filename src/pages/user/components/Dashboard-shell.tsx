@@ -126,8 +126,8 @@ export function DashboardShell({ children, className }: DashboardShellProps) {
       {/* Main content */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
-        <div className="flex items-center gap-4 bg-background px-4">
-          {/* {isMobile ? (
+        {/* <div className="flex items-center gap-4 bg-background px-4">
+          {isMobile ? (
             <Sheet open={mobileSheetOpen} onOpenChange={setMobileSheetOpen}>
               <SheetTrigger asChild>
                 <Button variant="outline">
@@ -166,8 +166,8 @@ export function DashboardShell({ children, className }: DashboardShellProps) {
             </Sheet>
           ) : (
             ""
-          )} */}
-        </div>
+          )}
+        </div> */}
 
         <main
           className={cn("flex-1 p-4 md:p-8", isMobile && "pb-20", className)}

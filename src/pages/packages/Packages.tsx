@@ -610,7 +610,7 @@ export default function BrowsePackages() {
                     {viewMode === "list" ? (
                       <div className="space-y-4">
                         {packages.map((pkg) => (
-                          <Card key={pkg.id} className="overflow-hidden">
+                          <Card key={pkg._id} className="overflow-hidden">
                             <div className="flex flex-col md:flex-row">
                               <div className="flex-1 p-3 md:p-4">
                                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">

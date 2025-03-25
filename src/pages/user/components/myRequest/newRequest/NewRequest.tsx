@@ -822,14 +822,6 @@ function NewRequestForm() {
 
         <CardFooter className="flex flex-col sm:flex-row justify-between gap-3">
           <Button
-            variant="outline"
-            type="button"
-            // asChild
-            className="w-full sm:w-auto"
-          >
-            <Link to="/packages">Cancel</Link>
-          </Button>
-          <Button
             type="submit"
             disabled={isSubmitting}
             className="w-full sm:w-auto"
@@ -864,6 +856,14 @@ function NewRequestForm() {
                 Create Package Request
               </>
             )}
+          </Button>
+          <Button
+            variant="outline"
+            type="button"
+            // asChild
+            className="w-full sm:w-auto"
+          >
+            <Link to="/packages">Cancel</Link>
           </Button>
         </CardFooter>
       </form>

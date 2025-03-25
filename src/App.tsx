@@ -20,7 +20,6 @@ import SenderBookings from "./pages/sender/SenderBookings";
 import TravelerTrips from "./pages/traveller/TravelerTrips";
 import UserDashboardLayout from "./pages/user/UserDashboardLayout";
 import UserDashboard from "./pages/user/components/UserDashboard";
-// import TripsPage from "./pages/user/components/trips/Trips";
 import MyRequest from "./pages/user/components/myRequest/MyRequest";
 import NewTrip from "./pages/user/components/trips/NewTrip";
 import { Luggage, Plane, User, Home as HomeIcon } from "lucide-react";
@@ -29,6 +28,7 @@ import AboutPage from "./pages/about/About";
 import NewRequest from "./pages/user/components/myRequest/newRequest/NewRequest";
 import ProhibitedItemsPage from "./pages/terms/ProhibitedItems";
 import BrowsePackages from "./pages/packages/Packages";
+import ContactPage from "./pages/contact/Contact";
 
 // Protected Route Component
 interface ProtectedRouteProps {
@@ -100,6 +100,7 @@ function App() {
           <Route path="/trips/:id" element={<TripDetails />} />
           <Route path="/packages" element={<BrowsePackages />} />
           <Route path="/about-us" element={<AboutPage />} />
+          <Route path="/contact-us" element={<ContactPage />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/prohibited-items" element={<ProhibitedItemsPage />} />
