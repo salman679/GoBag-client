@@ -62,12 +62,12 @@ export interface Booking {
   id: string;
   tripId: string;
   senderId: string;
-  senderName: string;
+  travelerId: string;
   luggageSize: number; // in kg
   luggageDescription: string;
   totalPrice: number;
   status: "pending" | "confirmed" | "cancelled" | "completed";
-  paymentStatus: "pending" | "paid" | "refunded";
+  // paymentStatus: "pending" | "paid" | "refunded";
   createdAt: Date;
 }
 

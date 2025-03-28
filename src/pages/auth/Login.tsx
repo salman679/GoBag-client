@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Luggage } from "lucide-react";
 import { useAuthStore } from "../../store/authStore";
@@ -15,6 +15,7 @@ const Login: React.FC = () => {
   const { login, isLoading, signInWithGoogle, signInWithFacebook } =
     useAuthStore();
   const navigate = useNavigate();
+  const location = useLocation();
   const [error, setError] = useState<string | null>(null);
   const [rememberMe, setRememberMe] = useState(false);
 
@@ -24,12 +25,14 @@ const Login: React.FC = () => {
     formState: { errors },
   } = useForm<LoginFormData>();
 
+  const from = location.state?.from?.pathname || "/";
+
   const onSubmit = async (data: LoginFormData) => {
     try {
       setError(null);
       await login(data.email, data.password, rememberMe);
 
-      navigate("/");
+      navigate(from, { replace: true });
     } catch (error) {
       setError("Invalid email or password. Please try again." + error);
     }
@@ -39,7 +42,7 @@ const Login: React.FC = () => {
     try {
       await signInWithGoogle();
 
-      navigate("/");
+      navigate(from, { replace: true });
     } catch (error) {
       console.error("Error signing in with Google:", error);
     }
@@ -49,7 +52,7 @@ const Login: React.FC = () => {
     try {
       await signInWithFacebook();
 
-      navigate("/");
+      navigate(from, { replace: true });
     } catch (error) {
       console.error("Error signing in with Facebook:", error);
     }

@@ -1,13 +1,12 @@
 import { create } from "zustand";
 import { Package } from "../types";
-// import {
-//   createPackage,
-//   getPackages,
-//   getPackagesBySender,
-//   updatePackageStatus,
-// } from "@/services/packageService";
 import { useAuthStore } from "./authStore";
-import { createPackage, getPackages } from "@/services/packageService";
+import {
+  createPackage,
+  getPackages,
+  getPackagesByUser,
+  updatePackageStatus,
+} from "@/services/packageService";
 
 interface PackageState {
   packages: Package[];
@@ -51,7 +50,7 @@ export const usePackageStore = create<PackageState>((set, get) => ({
   fetchPackagesBySender: async (email: string) => {
     set({ isLoading: true });
     try {
-      const packages = await getPackagesBySender(email);
+      const packages = await getPackagesByUser(email);
       set({ packages, isLoading: false });
     } catch (error) {
       set({ isLoading: false });

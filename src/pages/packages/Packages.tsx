@@ -12,7 +12,6 @@ import {
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/Button";
-
 import { Badge } from "@/components/ui/badge";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -46,6 +45,10 @@ import {
   ArrowRight,
   Globe,
   Shield,
+  Check,
+  Luggage,
+  Mail,
+  Phone,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -56,138 +59,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Link } from "react-router-dom";
+import { Textarea } from "@/components/ui/textarea";
+import { useAuthStore } from "@/store/authStore";
 import { usePackageStore } from "@/store/packageStore";
+import { Link, useLocation } from "react-router-dom";
+import { useBookingStore } from "@/store/bookingStore";
 
-// Mock data for package requests
-// const packages = [
-//   {
-//     id: 1,
-//     origin: "New York, USA",
-//     destination: "London, UK",
-//     date: addDays(new Date(), 7),
-//     size: "Medium",
-//     weight: "3.5 kg",
-//     category: "Electronics",
-//     description:
-//       "A new laptop that needs to be delivered to my brother who is studying abroad.",
-//     budget: 120,
-//     urgency: "Standard",
-//     sender: {
-//       name: "Alice Smith",
-//       avatar: "/placeholder.svg?height=40&width=40",
-//       initials: "AS",
-//       rating: 4.8,
-//       reviews: 12,
-//     },
-//     status: "Open",
-//   },
-//   {
-//     id: 2,
-//     origin: "Paris, France",
-//     destination: "Berlin, Germany",
-//     date: addDays(new Date(), 5),
-//     size: "Small",
-//     weight: "1.2 kg",
-//     category: "Documents",
-//     description:
-//       "Important business documents that need to be delivered to our Berlin office.",
-//     budget: 80,
-//     urgency: "Urgent",
-//     sender: {
-//       name: "Robert Johnson",
-//       avatar: "/placeholder.svg?height=40&width=40",
-//       initials: "RJ",
-//       rating: 4.5,
-//       reviews: 8,
-//     },
-//     status: "Open",
-//   },
-//   {
-//     id: 3,
-//     origin: "Tokyo, Japan",
-//     destination: "Seoul, South Korea",
-//     date: addDays(new Date(), 10),
-//     size: "Small",
-//     weight: "0.8 kg",
-//     category: "Gifts",
-//     description:
-//       "A birthday gift for my friend in Seoul. It's a small collectible item.",
-//     budget: 60,
-//     urgency: "Standard",
-//     sender: {
-//       name: "Yuki Tanaka",
-//       avatar: "/placeholder.svg?height=40&width=40",
-//       initials: "YT",
-//       rating: 5.0,
-//       reviews: 15,
-//     },
-//     status: "Open",
-//   },
-//   {
-//     id: 4,
-//     origin: "Sydney, Australia",
-//     destination: "Auckland, New Zealand",
-//     date: addDays(new Date(), 14),
-//     size: "Medium",
-//     weight: "2.5 kg",
-//     category: "Clothing",
-//     description: "Winter clothes for my daughter who is studying in Auckland.",
-//     budget: 90,
-//     urgency: "Flexible",
-//     sender: {
-//       name: "Emma Wilson",
-//       avatar: "/placeholder.svg?height=40&width=40",
-//       initials: "EW",
-//       rating: 4.7,
-//       reviews: 9,
-//     },
-//     status: "Open",
-//   },
-//   {
-//     id: 5,
-//     origin: "Dubai, UAE",
-//     destination: "Mumbai, India",
-//     date: addDays(new Date(), 3),
-//     size: "Large",
-//     weight: "8 kg",
-//     category: "Gifts",
-//     description:
-//       "Wedding gifts for my cousin who is getting married next month.",
-//     budget: 150,
-//     urgency: "Urgent",
-//     sender: {
-//       name: "Raj Patel",
-//       avatar: "/placeholder.svg?height=40&width=40",
-//       initials: "RP",
-//       rating: 4.6,
-//       reviews: 11,
-//     },
-//     status: "Open",
-//   },
-//   {
-//     id: 6,
-//     origin: "San Francisco, USA",
-//     destination: "Toronto, Canada",
-//     date: addDays(new Date(), 8),
-//     size: "Small",
-//     weight: "1.5 kg",
-//     category: "Electronics",
-//     description: "A smartphone that needs to be delivered to my sister.",
-//     budget: 100,
-//     urgency: "Standard",
-//     sender: {
-//       name: "David Chen",
-//       avatar: "/placeholder.svg?height=40&width=40",
-//       initials: "DC",
-//       rating: 4.9,
-//       reviews: 20,
-//     },
-//     status: "Open",
-//   },
-// ];
-
-export default function BrowsePackages() {
+export default function BrowsePackagesPage() {
   const [searchParams, setSearchParams] = useState({
     origin: "",
     destination: "",
@@ -205,19 +83,27 @@ export default function BrowsePackages() {
 
   const [sortBy, setSortBy] = useState("date");
   const [viewMode, setViewMode] = useState("grid");
-  const [selectedPackage, setSelectedPackage] = useState<number | null>(null);
+  const [selectedPackageId, setSelectedPackageId] = useState<string | null>(
+    null
+  );
   const [showLoginDialog, setShowLoginDialog] = useState(false);
   const [filtersVisible, setFiltersVisible] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showBookingDialog, setShowBookingDialog] = useState(false);
+  const [bookingMessage, setBookingMessage] = useState("");
+  const [bookingConfirmed, setBookingConfirmed] = useState(false);
+  const location = useLocation();
 
+  const { isAuthenticated } = useAuthStore();
   const { packages, fetchPackages } = usePackageStore();
+  const { bookPackage } = useBookingStore();
 
   useEffect(() => {
     fetchPackages();
   }, [fetchPackages]);
 
   // Find the selected package details
-  const packageDetail = packages.find((pkg) => pkg._id === selectedPackage);
+  const packageDetail = packages.find((pkg) => pkg._id === selectedPackageId);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -243,8 +129,20 @@ export default function BrowsePackages() {
   };
 
   const handleExpressInterest = () => {
-    // Show login dialog since this is for non-logged in users
-    setShowLoginDialog(true);
+    if (isAuthenticated) {
+      setShowBookingDialog(true);
+    } else {
+      setShowLoginDialog(true);
+    }
+  };
+
+  const handleBookPackage = async () => {
+    await bookPackage(selectedPackageId as string, bookingMessage);
+
+    console.log("Booking package with message:", bookingMessage);
+    setShowBookingDialog(false);
+    setBookingConfirmed(true);
+    setBookingMessage("");
   };
 
   // Improve the mobile responsiveness of the filters toggle
@@ -258,8 +156,6 @@ export default function BrowsePackages() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      {/* Header/Navigation */}
-
       <main className="flex-1">
         {/* Hero Section */}
         <section className="py-8 md:py-12 bg-gradient-to-b from-background to-blue-50 dark:to-blue-950/20">
@@ -542,8 +438,7 @@ export default function BrowsePackages() {
                         <Button
                           type="submit"
                           className="flex-1"
-                          onClick={(e) => {
-                            handleSearch(e);
+                          onClick={() => {
                             toggleFilters(); // Close filters after applying on mobile
                           }}
                         >
@@ -627,7 +522,7 @@ export default function BrowsePackages() {
                                     <p className="text-sm text-muted-foreground flex items-center mt-1">
                                       <CalendarIcon className="h-3 w-3 mr-1" />
                                       Delivery by{" "}
-                                      {format(pkg.deliveryDate, "PP")}
+                                      {format(new Date(pkg.deliveryDate), "PP")}
                                     </p>
                                   </div>
                                   <div className="text-right">
@@ -654,12 +549,6 @@ export default function BrowsePackages() {
                                     </p>
                                     <p className="text-sm">{pkg.weight}</p>
                                   </div>
-                                  {/* <div>
-                                    <p className="text-xs text-muted-foreground">
-                                      Category
-                                    </p>
-                                    <p className="text-sm">{pkg.category}</p>
-                                  </div> */}
                                 </div>
 
                                 <div className="mt-3 md:mt-4">
@@ -685,15 +574,6 @@ export default function BrowsePackages() {
                                     <p className="text-sm font-medium">
                                       {pkg.senderName}
                                     </p>
-                                    {/* <div className="flex items-center">
-                                      <span className="text-xs text-yellow-500">
-                                        ★
-                                      </span>
-                                      <span className="text-xs ml-1">
-                                        {pkg.sender.rating} (
-                                        {pkg.sender.reviews} reviews)
-                                      </span>
-                                    </div> */}
                                   </div>
                                 </div>
                               </div>
@@ -703,7 +583,7 @@ export default function BrowsePackages() {
                                   variant="outline"
                                   size="sm"
                                   className="flex-1 md:w-[120px]"
-                                  onClick={() => setSelectedPackage(pkg._id)}
+                                  onClick={() => setSelectedPackageId(pkg._id)}
                                 >
                                   <Eye className="h-4 w-4 mr-2" />
                                   Details
@@ -711,7 +591,7 @@ export default function BrowsePackages() {
                                 <Button
                                   size="sm"
                                   className="flex-1 md:w-[120px] md:mt-2 ml-2 md:ml-0"
-                                  onClick={handleExpressInterest}
+                                  onClick={() => setSelectedPackageId(pkg._id)}
                                 >
                                   <ThumbsUp className="h-4 w-4 mr-2" />
                                   I'll Deliver
@@ -744,7 +624,7 @@ export default function BrowsePackages() {
                               </div>
                               <CardDescription className="flex items-center mt-1 text-xs sm:text-sm">
                                 <CalendarIcon className="h-3 w-3 mr-1" />
-                                {format(pkg.deliveryDate, "PP")}
+                                {format(new Date(pkg.deliveryDate), "PP")}
                               </CardDescription>
                             </CardHeader>
                             <CardContent className="px-3 pb-3 md:p-6">
@@ -779,14 +659,6 @@ export default function BrowsePackages() {
                                   <p className="text-xs font-medium">
                                     {pkg.senderName}
                                   </p>
-                                  {/* <div className="flex items-center">
-                                    <span className="text-xs text-yellow-500">
-                                      ★
-                                    </span>
-                                    <span className="text-xs ml-1">
-                                      {pkg.sender.rating}
-                                    </span>
-                                  </div> */}
                                 </div>
                               </div>
 
@@ -795,7 +667,7 @@ export default function BrowsePackages() {
                                   variant="outline"
                                   size="sm"
                                   className="flex-1 text-xs sm:text-sm py-1 h-8"
-                                  onClick={() => setSelectedPackage(pkg._id)}
+                                  onClick={() => setSelectedPackageId(pkg._id)}
                                 >
                                   <Eye className="h-3 w-3 mr-1" />
                                   Details
@@ -803,7 +675,7 @@ export default function BrowsePackages() {
                                 <Button
                                   size="sm"
                                   className="flex-1 text-xs sm:text-sm py-1 h-8"
-                                  onClick={handleExpressInterest}
+                                  onClick={() => setSelectedPackageId(pkg._id)}
                                 >
                                   <ThumbsUp className="h-3 w-3 mr-1" />
                                   I'll Deliver
@@ -933,7 +805,7 @@ export default function BrowsePackages() {
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
-                <Link to="/how-it-works" className="w-full sm:w-auto">
+                <Link to="/about-us" className="w-full sm:w-auto">
                   <Button
                     size="lg"
                     variant="outline"
@@ -949,12 +821,12 @@ export default function BrowsePackages() {
       </main>
 
       {/* Package Detail Dialog */}
-      {selectedPackage && packageDetail && (
+      {selectedPackageId && packageDetail && (
         <Dialog
-          open={selectedPackage !== null}
-          onOpenChange={(open) => !open && setSelectedPackage(null)}
+          open={selectedPackageId !== null}
+          onOpenChange={(open) => !open && setSelectedPackageId(null)}
         >
-          <DialogContent className="max-w-3xl max-h-[90vh] overflow-auto">
+          <DialogContent className="max-w-3xl max-h-[90vh] max-w[80vw] overflow-auto rounded-lg">
             <DialogHeader>
               <DialogTitle>Package Details</DialogTitle>
               <DialogDescription>
@@ -977,7 +849,7 @@ export default function BrowsePackages() {
                     <div>
                       <p className="text-sm font-medium">Delivery Date</p>
                       <p className="text-sm text-muted-foreground">
-                        {format(packageDetail.deliveryDate, "PP")}
+                        {format(new Date(packageDetail.deliveryDate), "PP")}
                       </p>
                     </div>
                     <div>
@@ -998,12 +870,6 @@ export default function BrowsePackages() {
                         {packageDetail.weight}
                       </p>
                     </div>
-                    {/* <div>
-                      <p className="text-sm font-medium">Category</p>
-                      <p className="text-sm text-muted-foreground">
-                        {packageDetail.category}
-                      </p>
-                    </div> */}
                     <div>
                       <p className="text-sm font-medium">Status</p>
                       <Badge variant="outline">{packageDetail.status}</Badge>
@@ -1048,13 +914,6 @@ export default function BrowsePackages() {
                         <p className="text-sm font-medium">
                           {packageDetail.senderName}
                         </p>
-                        {/* <div className="flex items-center">
-                          <span className="text-xs text-yellow-500">★</span>
-                          <span className="text-xs ml-1">
-                            {packageDetail.sender.rating} (
-                            {packageDetail.sender.reviews} reviews)
-                          </span>
-                        </div> */}
                       </div>
                     </div>
 
@@ -1128,7 +987,7 @@ export default function BrowsePackages() {
             <DialogFooter className="flex-col sm:flex-row gap-2">
               <Button
                 variant="outline"
-                onClick={() => setSelectedPackage(null)}
+                onClick={() => setSelectedPackageId(null)}
                 className="sm:order-1"
               >
                 Close
@@ -1143,8 +1002,11 @@ export default function BrowsePackages() {
       )}
 
       {/* Login Dialog */}
-      <Dialog open={showLoginDialog} onOpenChange={setShowLoginDialog}>
-        <DialogContent>
+      <Dialog
+        open={showLoginDialog && !isAuthenticated}
+        onOpenChange={setShowLoginDialog}
+      >
+        <DialogContent className="max-w-sm max-h[80vh] overflow-auto rounded-lg">
           <DialogHeader>
             <DialogTitle>Sign Up to Continue</DialogTitle>
             <DialogDescription>
@@ -1162,14 +1024,14 @@ export default function BrowsePackages() {
             </div>
 
             <div className="flex flex-col space-y-3">
-              <Link to="/register?as=traveler">
+              <Link to="/register?as=traveler" state={{ from: location }}>
                 <Button className="w-full">
                   Sign Up as Traveler
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
 
-              <Link to="/login">
+              <Link to="/login" state={{ from: location }}>
                 <Button variant="outline" className="w-full">
                   Log In to Existing Account
                 </Button>
@@ -1180,6 +1042,239 @@ export default function BrowsePackages() {
           <DialogFooter>
             <Button onClick={() => setShowLoginDialog(false)}>
               Maybe Later
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Booking Dialog */}
+      <Dialog open={showBookingDialog} onOpenChange={setShowBookingDialog}>
+        <DialogContent className="sm:max-w-[425px] overflow-auto rounded-lg">
+          <DialogHeader>
+            <DialogTitle>Book Package Delivery</DialogTitle>
+            <DialogDescription>
+              Confirm that you want to deliver this package
+            </DialogDescription>
+          </DialogHeader>
+
+          {packageDetail && (
+            <div className="py-4">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <p className="text-sm font-medium">
+                    {packageDetail.departureCountry} to{" "}
+                    {packageDetail.destinationCountry}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Delivery by{" "}
+                    {format(new Date(packageDetail.deliveryDate), "PPP")}
+                  </p>
+                </div>
+                <div className="text-lg font-bold text-primary flex items-center">
+                  <DollarSign className="h-4 w-4" />
+                  {packageDetail.budget}
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="message" className="mb-2 block">
+                    Message to Sender
+                  </Label>
+                  <Textarea
+                    id="message"
+                    placeholder="Introduce yourself and explain why you're a good fit for delivering this package..."
+                    value={bookingMessage}
+                    onChange={(e) => setBookingMessage(e.target.value)}
+                    rows={5}
+                  />
+                </div>
+
+                <div className="bg-muted p-3 rounded-md">
+                  <p className="text-sm font-medium flex items-center">
+                    <Check className="h-4 w-4 mr-2 text-primary" />
+                    What happens next?
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    The sender will review your profile and message. If they
+                    approve, you'll be able to coordinate pickup and delivery
+                    details.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setShowBookingDialog(false);
+                setBookingMessage("");
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleBookPackage}
+              disabled={bookingMessage.length < 10}
+            >
+              <ThumbsUp className="h-4 w-4 mr-2" />
+              Confirm Booking
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Booking Confirmation Dialog */}
+      <Dialog open={bookingConfirmed} onOpenChange={setBookingConfirmed}>
+        <DialogContent className="overflow-auto max-h-[90vh] rounded-lg">
+          <DialogHeader>
+            <DialogTitle className="flex items-center text-primary">
+              <Check className="h-5 w-5 mr-2" />
+              Booking Confirmed!
+            </DialogTitle>
+            <DialogDescription>
+              Your package delivery booking has been confirmed
+            </DialogDescription>
+          </DialogHeader>
+
+          {packageDetail && (
+            <div className="py-4">
+              <div className="bg-green-50 dark:bg-green-950/20 p-4 rounded-md mb-4">
+                <h3 className="font-medium text-green-800 dark:text-green-300 mb-2">
+                  Booking Details
+                </h3>
+                <div className="space-y-2 text-green-700 dark:text-green-400">
+                  <p className="text-sm">
+                    <span className="font-medium">Route:</span>{" "}
+                    {packageDetail.departureCountry} to{" "}
+                    {packageDetail.destinationCountry}
+                  </p>
+                  <p className="text-sm">
+                    <span className="font-medium">Delivery by:</span>{" "}
+                    {format(new Date(packageDetail.deliveryDate), "PPP")}
+                  </p>
+                  <p className="text-sm">
+                    <span className="font-medium">Package:</span>{" "}
+                    {packageDetail.packageSize}, {packageDetail.weight}
+                  </p>
+                  <p className="text-sm">
+                    <span className="font-medium">Earnings:</span> $
+                    {packageDetail.budget}
+                  </p>
+                </div>
+              </div>
+
+              <div className="border rounded-md p-4 mb-4">
+                <h3 className="text-sm font-medium mb-2">
+                  Sender Contact Information
+                </h3>
+                <div className="space-y-2">
+                  <div className="flex items-center">
+                    <Avatar className="h-8 w-8 mr-2">
+                      <AvatarImage
+                        src={packageDetail.senderProfilePic}
+                        alt={packageDetail.senderName}
+                      />
+                      <AvatarFallback>
+                        {packageDetail.senderName.charAt(0)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <p className="font-medium">{packageDetail.senderName}</p>
+                  </div>
+                  <p className="text-sm flex items-center">
+                    <Mail className="h-4 w-4 mr-2 text-muted-foreground" />
+                    {packageDetail.senderEmail || "email@example.com"}
+                  </p>
+                  <p className="text-sm flex items-center">
+                    <Phone className="h-4 w-4 mr-2 text-muted-foreground" />
+                    {packageDetail.senderPhone || "+1 (555) 123-4567"}
+                  </p>
+                </div>
+                <div className="mt-3 pt-3 border-t">
+                  <p className="text-xs text-muted-foreground">
+                    Please contact the sender directly to arrange pickup and
+                    delivery details.
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-lg font-medium mb-2">Next Steps</h3>
+                  <ol className="space-y-3">
+                    <li className="flex items-start">
+                      <div className="rounded-full w-6 h-6 bg-primary text-primary-foreground flex items-center justify-center text-xs mr-2">
+                        1
+                      </div>
+                      <div>
+                        <p className="font-medium">Contact the Sender</p>
+                        <p className="text-sm text-muted-foreground">
+                          Reach out to {packageDetail.senderName} using the
+                          contact information above
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex items-start">
+                      <div className="rounded-full w-6 h-6 bg-primary text-primary-foreground flex items-center justify-center text-xs mr-2">
+                        2
+                      </div>
+                      <div>
+                        <p className="font-medium">Pick Up the Package</p>
+                        <p className="text-sm text-muted-foreground">
+                          Meet the sender at the agreed location to collect the
+                          package
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex items-start">
+                      <div className="rounded-full w-6 h-6 bg-primary text-primary-foreground flex items-center justify-center text-xs mr-2">
+                        3
+                      </div>
+                      <div>
+                        <p className="font-medium">Deliver the Package</p>
+                        <p className="text-sm text-muted-foreground">
+                          Deliver the package to the recipient at the
+                          destination
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex items-start">
+                      <div className="rounded-full w-6 h-6 bg-primary text-primary-foreground flex items-center justify-center text-xs mr-2">
+                        4
+                      </div>
+                      <div>
+                        <p className="font-medium">Get Paid</p>
+                        <p className="text-sm text-muted-foreground">
+                          Once delivery is confirmed, you'll receive your
+                          payment
+                        </p>
+                      </div>
+                    </li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <DialogFooter className="flex flex-col sm:flex-row gap-2">
+            <Button
+              variant="outline"
+              className="sm:flex-1"
+              onClick={() => setBookingConfirmed(false)}
+            >
+              Close
+            </Button>
+            <Button className="sm:flex-1">
+              <Link
+                onClick={() => setBookingConfirmed(false)}
+                to="/my-deliveries"
+                className="flex items-center justify-center w-full"
+              >
+                <Luggage className="h-4 w-4 mr-2" />
+                View My Deliveries
+              </Link>
             </Button>
           </DialogFooter>
         </DialogContent>
